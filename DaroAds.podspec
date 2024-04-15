@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'DaroAds'
-  spec.version      = '0.9.0'
+  spec.version      = '0.9.1'
   spec.summary      = 'Ad network mediation sdk for iOS.'
   spec.description  = <<-DESC
                       Daro is is a SDK that helps you to easily integrate multiple ad networks into your app.
@@ -12,6 +12,10 @@ Pod::Spec.new do |spec|
   spec.source       = { :http => "https://github.com/delightroom/Daro-iOS-SDK/releases/download/#{spec.version}/Daro.xcframework.zip" }
   spec.swift_version = '5.7'
   spec.ios.deployment_target = '14.1'
+
+  spec.resource_bundles = {
+    'DaroAdsResources' => ['Daro.xcframework/ios-arm64/Daro.framework/PrivacyInfo.xcprivacy']
+  }
 
   spec.static_framework = true
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
