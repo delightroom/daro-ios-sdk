@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'DaroAds'
-  spec.version      = '0.9.3'
+  spec.version      = '0.9.4'
   spec.summary      = 'Ad network mediation sdk for iOS.'
   spec.description  = <<-DESC
                       Daro is is a SDK that helps you to easily integrate multiple ad networks into your app.
@@ -21,17 +21,27 @@ Pod::Spec.new do |spec|
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   spec.vendored_frameworks = 'Daro.xcframework'
 
-  spec.dependency 'Google-Mobile-Ads-SDK', '10.4.0' # AdMob
-  spec.dependency 'GoogleMobileAdsMediationInMobi', '10.5.4.0' # InMobi
-  spec.dependency 'GoogleMobileAdsMediationFyber', '8.2.1.0' # Fyber
-  spec.dependency 'GoogleMobileAdsMediationChartboost', '9.3.0' # Chartboost
-  spec.dependency 'GoogleMobileAdsMediationPangle', '5.1.1.0' # Pangle
-  spec.dependency 'GoogleMobileAdsMediationFacebook', '6.12.0.1' # Meta
+  spec.dependency 'Google-Mobile-Ads-SDK', '11.2.0'
 
-  spec.dependency 'OpenWrapSDK', '3.2.0' # OpenWrap
-  spec.dependency 'AdMobPubMaticAdapter', '2.2.0' # PubMatic
-  spec.dependency 'GoogleMobileAds-HyBid-Adapters', '2.18.1.1' # Verve
-  spec.dependency 'AmazonPublisherServicesSDK', '4.7.8'
-  spec.dependency 'AmazonPublisherServicesAdMobAdapter', '3.0.5' # Amazon
+  # Google Admob partner networks
+  spec.dependency 'GoogleMobileAdsMediationFacebook', '6.15.0.0'     # Meta
+  spec.dependency 'GoogleMobileAdsMediationPangle', '5.9.0.8.0'      # Pangle
+  spec.dependency 'GoogleMobileAdsMediationInMobi', '10.7.1.0'       # Inmobi
+  spec.dependency 'GoogleMobileAdsMediationFyber', '8.2.7.0'         # DT Exchange
+  spec.dependency 'GoogleMobileAdsMediationChartboost', '9.7.0.0'    # Chatboost
+  spec.dependency 'GoogleMobileAdsMediationAppLovin', '12.4.0.0'     # AppLovin
+  spec.dependency 'GoogleMobileAdsMediationIronSource', '7.9.1.0.0'  # IronSource
+  spec.dependency 'GoogleMobileAdsMediationVungle', '7.3.0.0'        # Vungle
+  spec.dependency 'GoogleMobileAdsMediationMintegral', '7.6.0.0'     # Mintegral
+
+  # Other networks
+  spec.dependency 'GoogleMobileAds-HyBid-Adapters', '3.0.0.1'     # Verve(HyBid)
+  spec.dependency 'OpenWrapSDK', '3.5.1'                          # PubMatic
+  spec.dependency 'AdMobPubMaticAdapter', '3.0.0'                 # PubMatic
+
+  # APS
+  spec.dependency 'AmazonPublisherServicesSDK', '4.9.4'
+  spec.dependency 'AmazonPublisherServicesAdMobAdapter', '3.0.5'  # Amazon
+
 
 end
