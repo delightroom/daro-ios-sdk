@@ -21,21 +21,21 @@ Pod::Spec.new do |spec|
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   spec.vendored_frameworks = 'Daro.xcframework'
 
-  spec.dependency 'Google-Mobile-Ads-SDK', '11.2.0'
+  spec.dependency 'Google-Mobile-Ads-SDK', '11.3.0'
 
   # Google Admob partner networks
-  spec.dependency 'GoogleMobileAdsMediationFacebook', '6.15.0.0'     # Meta
-  spec.dependency 'GoogleMobileAdsMediationPangle', '5.9.0.8.0'      # Pangle
-  spec.dependency 'GoogleMobileAdsMediationInMobi', '10.7.1.0'       # Inmobi
-  spec.dependency 'GoogleMobileAdsMediationFyber', '8.2.7.0'         # DT Exchange
+  spec.dependency 'GoogleMobileAdsMediationFacebook', '6.15.1.0'     # Meta
+  spec.dependency 'GoogleMobileAdsMediationPangle', '5.9.0.7.0'      # Pangle
+  spec.dependency 'GoogleMobileAdsMediationInMobi', '10.7.2.0'       # Inmobi
+  spec.dependency 'GoogleMobileAdsMediationFyber', '8.2.8.0'         # DT Exchange
   spec.dependency 'GoogleMobileAdsMediationChartboost', '9.7.0.0'    # Chatboost
-  spec.dependency 'GoogleMobileAdsMediationAppLovin', '12.4.0.0'     # AppLovin
-  spec.dependency 'GoogleMobileAdsMediationIronSource', '7.9.1.0.0'  # IronSource
-  spec.dependency 'GoogleMobileAdsMediationVungle', '7.3.0.0'        # Vungle
-  spec.dependency 'GoogleMobileAdsMediationMintegral', '7.6.0.0'     # Mintegral
+  spec.dependency 'GoogleMobileAdsMediationAppLovin', '12.4.1.0'     # AppLovin
+  spec.dependency 'GoogleMobileAdsMediationIronSource', '8.0.0.0.0'  # IronSource
+  spec.dependency 'GoogleMobileAdsMediationVungle', '7.3.1.1.0'      # Vungle
+  spec.dependency 'GoogleMobileAdsMediationMintegral', '7.6.2.0'     # Mintegral
 
   # Other networks
-  spec.dependency 'GoogleMobileAds-HyBid-Adapters', '3.0.0.1'     # Verve(HyBid)
+  spec.dependency 'GoogleMobileAds-HyBid-Adapters', '3.0.2.1'     # Verve(HyBid)
   spec.dependency 'OpenWrapSDK', '3.5.1'                          # PubMatic
   spec.dependency 'AdMobPubMaticAdapter', '3.0.0'                 # PubMatic
 
