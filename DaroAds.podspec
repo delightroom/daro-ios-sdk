@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'DaroAds'
-  spec.version = '0.9.7'
+  spec.version = '0.9.9'
   spec.summary = 'Ad network mediation sdk for iOS.'
   spec.description = <<-DESC
                       Daro is is a SDK that helps you to easily integrate multiple ad networks into your app.
@@ -34,13 +34,31 @@ Pod::Spec.new do |spec|
   spec.dependency 'GoogleMobileAdsMediationVungle', '7.3.1.1.0'      # Vungle
   spec.dependency 'GoogleMobileAdsMediationMintegral', '7.6.2.0'     # Mintegral
 
-  # Other networks
-  spec.dependency 'GoogleMobileAds-HyBid-Adapters', '3.0.2.1'     # Verve(HyBid)
-  spec.dependency 'OpenWrapSDK', '3.5.1'                          # PubMatic
-  spec.dependency 'AdMobPubMaticAdapter', '3.0.0'                 # PubMatic
+  # Verve(HyBid)
+  spec.dependency 'GoogleMobileAds-HyBid-Adapters', '3.0.2.1'
+
+  # PubMatic
+  spec.dependency 'OpenWrapSDK', '3.5.1'
+  spec.dependency 'AdMobPubMaticAdapter', '3.0.0'
+
+  # Smaato
+  spec.dependency 'smaato-ios-sdk/Banner', '22.8.4'
+  spec.dependency 'smaato-ios-sdk-mediation-admob/Banner', '11.3.0.0'
+
+  spec.dependency 'smaato-ios-sdk/Interstitial', '22.8.4'
+  spec.dependency 'smaato-ios-sdk-mediation-admob/Interstitial', '11.3.0.0'
+
+  spec.dependency 'smaato-ios-sdk/RewardedAds', '22.8.4'
+  spec.dependency 'smaato-ios-sdk-mediation-admob/RewardedAds', '11.3.0.0'
+
+  spec.dependency 'smaato-ios-sdk/Modules/Interstitial', '22.8.4'
+  spec.dependency 'smaato-ios-sdk/Modules/RichMedia', '22.8.4'
+  spec.dependency 'smaato-ios-sdk-mediation-admob/Interstitial', '11.3.0.0'
+
+  spec.dependency 'smaato-ios-sdk/Native', '22.8.4'
+  spec.dependency 'smaato-ios-sdk-mediation-admob/Native', '11.3.0.0'
 
   # APS
   spec.dependency 'AmazonPublisherServicesSDK', '4.9.4'
-
 
 end
