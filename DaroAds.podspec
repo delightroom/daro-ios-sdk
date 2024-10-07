@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'DaroAds'
-  spec.version = '0.9.9'
+  spec.version = '0.9.10'
   spec.summary = 'Ad network mediation sdk for iOS.'
   spec.description = <<-DESC
                       Daro is is a SDK that helps you to easily integrate multiple ad networks into your app.
@@ -25,7 +25,7 @@ Pod::Spec.new do |spec|
 
   # Google Admob partner networks
   spec.dependency 'GoogleMobileAdsMediationFacebook', '6.15.1.0'     # Meta
-  spec.dependency 'GoogleMobileAdsMediationPangle', '5.9.0.7.0'      # Pangle
+  spec.dependency 'GoogleMobileAdsMediationPangle', '6.2.0.8.0'      # Pangle
   spec.dependency 'GoogleMobileAdsMediationInMobi', '10.7.2.0'       # Inmobi
   spec.dependency 'GoogleMobileAdsMediationFyber', '8.2.8.0'         # DT Exchange
   spec.dependency 'GoogleMobileAdsMediationChartboost', '9.7.0.0'    # Chatboost
