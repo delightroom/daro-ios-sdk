@@ -59,5 +59,6 @@ Pod::Spec.new do |spec|
 
   # APS
   spec.dependency 'AmazonPublisherServicesSDK', '4.9.4'
+  spec.dependency 'DaroCore', '1.1.0'
 
 end
