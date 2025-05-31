@@ -27,6 +27,9 @@ git add .
 git commit -m "Bump version to $VERSION"
 git push origin main
 
+git tag $VERSION
+git push origin $VERSION
+
 # Check if Daro.xcframework.zip exists
 if [ ! -f "$SCRIPT_DIR/build/Daro.xcframework.zip" ]; then
   echo "$SCRIPT_DIR/build/Daro.xcframework.zip file not found"
