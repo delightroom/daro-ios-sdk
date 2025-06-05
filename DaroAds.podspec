@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'DaroAds'
-  spec.version = '1.1.5-alpha'
+  spec.version = '1.1.6-alpha'
   spec.summary = 'Ad network mediation sdk for iOS.'
   spec.description = <<-DESC
                       Daro is is a SDK that helps you to easily integrate multiple ad networks into your app.
