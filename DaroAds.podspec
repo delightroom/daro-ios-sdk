@@ -26,7 +26,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'GoogleMobileAdsMediationFacebook', '6.17.1.0'     # Meta
   spec.dependency 'GoogleMobileAdsMediationPangle', '6.5.0.9.0'      # Pangle
   spec.dependency 'GoogleMobileAdsMediationInMobi', '10.8.2.0'       # Inmobi
-  spec.dependency 'GoogleMobileAdsMediationFyber', '8.3.6.0'         # DT Exchange
+  spec.dependency 'GoogleMobileAdsMediationFyber', '8.3.7.0'         # DT Exchange
   spec.dependency 'GoogleMobileAdsMediationChartboost', '9.8.1.0'    # Chatboost
   spec.dependency 'GoogleMobileAdsMediationAppLovin', '13.2.0.0'     # AppLovin
   spec.dependency 'GoogleMobileAdsMediationIronSource', '8.8.0.0.0'  # IronSource
