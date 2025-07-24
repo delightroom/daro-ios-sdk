@@ -62,4 +62,7 @@ Pod::Spec.new do |spec|
   # APS
   spec.dependency 'AmazonPublisherServicesSDK', '5.1.0'
 
+  # Didomi
+  spec.dependency 'Didomi-XCFramework', '2.26.3'
+
 end
