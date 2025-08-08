@@ -35,9 +35,6 @@ Pod::Spec.new do |spec|
   spec.dependency 'GoogleMobileAdsMediationMoloco', '3.9.1.0'        # Moloco
   spec.dependency 'GoogleMobileAdsMediationLine', '2.9.20241106.3'   # Line (FiveAd)
 
-  # Verve(HyBid)
-  spec.dependency 'GoogleMobileAds-HyBid-Adapters', '3.2.0.1'
-
   # PubMatic
   spec.dependency 'OpenWrapSDK', '4.6.0'
   spec.dependency 'AdMobPubMaticAdapter', '5.0.0'
