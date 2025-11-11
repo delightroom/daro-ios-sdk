@@ -19,7 +19,7 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PODSPEC_PATH="$SCRIPT_DIR/DaroAds.podspec"
 
-# 현재 브랜치 감지 (정보 표시용)
+# 현재 브랜치 감지
 CURRENT_BRANCH=$(git branch --show-current)
 echo $'\e[34m=== 서브모듈 릴리스 시작 ===\e[0m'
 echo "서브모듈 현재 브랜치: $CURRENT_BRANCH"
@@ -30,11 +30,20 @@ echo ""
 # Update version in podspec file
 sed -i '' "s/spec\.version = '[^']*'/spec.version = '$VERSION'/" "$PODSPEC_PATH"
 
+# Verify podspec was updated
+if ! git diff --quiet "$PODSPEC_PATH"; then
+    echo "Podspec 파일이 성공적으로 업데이트되었습니다."
+else
+    echo "오류: Podspec 파일이 수정되지 않았습니다. 버전 형식이나 파일 경로를 확인해 주세요."
+    exit 1
+fi
+
 # Commit and push the changes
 git add .
 git commit -m "Bump version to $VERSION"
 git push origin $CURRENT_BRANCH
 
+# Create a tag and push it
 git tag $VERSION
 git push origin $VERSION
 
@@ -44,9 +53,9 @@ if [ ! -f "$SCRIPT_DIR/build/Daro.xcframework.zip" ]; then
   exit 1
 fi
 
-# # Create a tag and release using GitHub CLI with the file
+# Create a tag and release using GitHub CLI with the file
 gh release create $VERSION "$SCRIPT_DIR/build/Daro.xcframework.zip" --title "Release $VERSION" --notes "Release version $VERSION"
 git pull origin $CURRENT_BRANCH
 
-# # Push the podspec to the trunk
+# Push the podspec to the trunk
 pod trunk push "$PODSPEC_PATH" --allow-warnings --verbose
