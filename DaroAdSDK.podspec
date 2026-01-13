@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'DaroAdSDK'
-  spec.version = '1.0.0'
+  spec.version = '1.0.0-test'
   spec.summary = 'Daro Ad SDK for iOS - Standalone ad serving SDK'
   spec.description = <<-DESC
                       DaroAdSDK is a lightweight ad serving SDK that provides banner, interstitial, and native ad formats without third-party network dependencies.
