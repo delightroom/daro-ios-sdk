@@ -33,7 +33,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'GoogleMobileAdsMediationVungle', '7.5.3.0'        # Vungle
   spec.dependency 'GoogleMobileAdsMediationMintegral', '7.7.9.0'     # Mintegral
   spec.dependency 'GoogleMobileAdsMediationMoloco', '3.12.1.0'       # Moloco
-  spec.dependency 'GoogleMobileAdsMediationLine', '2.9.20250912.0'   # Line (FiveAd)
+  spec.dependency 'GoogleMobileAdsMediationLine', '2.9.20251119.0'   # Line (FiveAd)
   spec.dependency 'GoogleMobileAdsMediationUnity', '4.16.1.0'	     # Unity
 
   # APS
