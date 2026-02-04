@@ -20,7 +20,4 @@ Pod::Spec.new do |spec|
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   spec.vendored_frameworks = 'DaroAdSDK.xcframework'
 
-  # OMID (Open Measurement SDK) for viewability measurement
-  spec.dependency 'OMSDK_Mintegral', '1.5.1'
-
 end
