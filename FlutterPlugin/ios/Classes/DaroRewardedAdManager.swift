@@ -13,6 +13,8 @@ class DaroRewardedAdManager: NSObject, FlutterStreamHandler {
             loadAd(call, result: result)
         case "isAdReady":
             isAdReady(call, result: result)
+        case "setCustomData":
+            setCustomData(call, result: result)
         case "showAd":
             showAd(call, result: result)
         case "destroyAd":
@@ -76,6 +78,16 @@ class DaroRewardedAdManager: NSObject, FlutterStreamHandler {
         }
 
         loader.loadAd()
+        result(nil)
+    }
+
+    private func setCustomData(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        guard let adUnitId = extractAdUnitId(from: call, result: result) else { return }
+
+        let args = call.arguments as? [String: Any]
+        let customData = args?["customData"] as? String ?? ""
+
+        ads[adUnitId]?.setCustomData(customData)
         result(nil)
     }
 

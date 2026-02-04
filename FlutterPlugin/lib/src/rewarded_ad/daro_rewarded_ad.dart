@@ -161,6 +161,13 @@ class DaroRewardedAd {
     }
   }
 
+  Future<void> setCustomData(String customData) async {
+    await _methodChannel.invokeMethod('setCustomData', {
+      'adUnitId': adUnitId,
+      'customData': customData,
+    });
+  }
+
   Future<void> show() async {
     final ready = await isReady();
     if (!ready) {

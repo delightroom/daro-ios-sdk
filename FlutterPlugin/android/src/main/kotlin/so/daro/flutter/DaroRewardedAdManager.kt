@@ -30,6 +30,7 @@ class DaroRewardedAdManager : MethodChannel.MethodCallHandler, EventChannel.Stre
         when (call.method) {
             "loadAd" -> loadAd(call, result)
             "isAdReady" -> isAdReady(call, result)
+            "setCustomData" -> setCustomData(call, result)
             "showAd" -> showAd(call, result)
             "destroyAd" -> destroyAd(call, result)
             else -> result.notImplemented()
@@ -118,6 +119,14 @@ class DaroRewardedAdManager : MethodChannel.MethodCallHandler, EventChannel.Stre
                 sendAdInfoEvent("onAdImpression", adUnitId, adInfo)
             }
         }
+    }
+
+    private fun setCustomData(call: MethodCall, result: MethodChannel.Result) {
+        val adUnitId = extractAdUnitId(call, result) ?: return
+        val customData = call.argument<String>("customData") ?: ""
+
+        ads[adUnitId]?.setCustomData(customData)
+        result.success(null)
     }
 
     private fun isAdReady(call: MethodCall, result: MethodChannel.Result) {
