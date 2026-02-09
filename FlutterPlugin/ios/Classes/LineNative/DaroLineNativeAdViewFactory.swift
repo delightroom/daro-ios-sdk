@@ -19,17 +19,21 @@ class DaroLineNativeAdViewFactory: NSObject, FlutterPlatformViewFactory {
 
         let configuration = DaroLineNativeAdConfiguration()
 
-        if let backgroundColor = params["backgroundColor"] as? String {
-            configuration.backgroundColor = colorFromHex(backgroundColor)
+        if let backgroundColor = params["backgroundColor"] as? [String: Any],
+           let color = colorFromMap(backgroundColor) {
+            configuration.backgroundColor = color
         }
-        if let contentColor = params["contentColor"] as? String {
-            configuration.titleTextColor = colorFromHex(contentColor)
+        if let contentColor = params["contentColor"] as? [String: Any],
+           let color = colorFromMap(contentColor) {
+            configuration.titleTextColor = color
         }
-        if let adMarkLabelTextColor = params["adMarkLabelTextColor"] as? String {
-            configuration.adMarkTextColor = colorFromHex(adMarkLabelTextColor)
+        if let adMarkLabelTextColor = params["adMarkLabelTextColor"] as? [String: Any],
+           let color = colorFromMap(adMarkLabelTextColor) {
+            configuration.adMarkTextColor = color
         }
-        if let adMarkLabelBackgroundColor = params["adMarkLabelBackgroundColor"] as? String {
-            configuration.adMarkBackgroundColor = colorFromHex(adMarkLabelBackgroundColor)
+        if let adMarkLabelBackgroundColor = params["adMarkLabelBackgroundColor"] as? [String: Any],
+           let color = colorFromMap(adMarkLabelBackgroundColor) {
+            configuration.adMarkBackgroundColor = color
         }
 
         return DaroLineNativeAdPlatformView(
@@ -45,29 +49,18 @@ class DaroLineNativeAdViewFactory: NSObject, FlutterPlatformViewFactory {
         return FlutterStandardMessageCodec.sharedInstance()
     }
 
-    private func colorFromHex(_ hexString: String) -> UIColor {
-        var hex = hexString.trimmingCharacters(in: .whitespacesAndNewlines)
-        if hex.hasPrefix("#") {
-            hex.removeFirst()
+    private func colorFromMap(_ map: [String: Any]) -> UIColor? {
+        guard let r = map["r"] as? Int,
+              let g = map["g"] as? Int,
+              let b = map["b"] as? Int,
+              let a = map["a"] as? Int else {
+            return nil
         }
-
-        var rgbValue: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&rgbValue)
-
-        if hex.count == 8 {
-            return UIColor(
-                red: CGFloat((rgbValue & 0xFF000000) >> 24) / 255.0,
-                green: CGFloat((rgbValue & 0x00FF0000) >> 16) / 255.0,
-                blue: CGFloat((rgbValue & 0x0000FF00) >> 8) / 255.0,
-                alpha: CGFloat(rgbValue & 0x000000FF) / 255.0
-            )
-        } else {
-            return UIColor(
-                red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-                green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-                blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-                alpha: 1.0
-            )
-        }
+        return UIColor(
+            red: CGFloat(r) / 255.0,
+            green: CGFloat(g) / 255.0,
+            blue: CGFloat(b) / 255.0,
+            alpha: CGFloat(a) / 255.0
+        )
     }
 }

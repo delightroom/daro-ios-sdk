@@ -82,6 +82,8 @@ class DaroBannerAdPlatformView(
             FrameLayout.LayoutParams.MATCH_PARENT
         )
         containerView.addView(bannerAdView, layoutParams)
+
+        bannerAdView.loadAd()
     }
 
     private fun setupMethodChannel() {

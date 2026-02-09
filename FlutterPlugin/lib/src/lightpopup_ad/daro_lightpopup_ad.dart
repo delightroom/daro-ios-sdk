@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/services.dart';
 import '../models/daro_ad_info.dart';
 import '../models/daro_ad_load_error.dart';
@@ -6,16 +7,16 @@ import '../models/daro_ad_display_error.dart';
 import '../internal/ad_event_data.dart';
 
 class DaroLightPopupStyle {
-  final String? backgroundColor;
-  final String? containerColor;
-  final String? adMarkLabelTextColor;
-  final String? adMarkLabelBackgroundColor;
-  final String? titleColor;
-  final String? bodyColor;
-  final String? ctaBackgroundColor;
-  final String? ctaTextColor;
+  final Color? backgroundColor;
+  final Color? containerColor;
+  final Color? adMarkLabelTextColor;
+  final Color? adMarkLabelBackgroundColor;
+  final Color? titleColor;
+  final Color? bodyColor;
+  final Color? ctaBackgroundColor;
+  final Color? ctaTextColor;
   final String? closeButtonText;
-  final String? closeButtonColor;
+  final Color? closeButtonColor;
 
   const DaroLightPopupStyle({
     this.backgroundColor,
@@ -30,18 +31,27 @@ class DaroLightPopupStyle {
     this.closeButtonColor,
   });
 
+  static Map<String, int> _colorToMap(Color color) {
+    return {
+      'r': color.red,
+      'g': color.green,
+      'b': color.blue,
+      'a': color.alpha,
+    };
+  }
+
   Map<String, dynamic> toMap() {
     return {
-      if (backgroundColor != null) 'backgroundColor': backgroundColor,
-      if (containerColor != null) 'containerColor': containerColor,
-      if (adMarkLabelTextColor != null) 'adMarkLabelTextColor': adMarkLabelTextColor,
-      if (adMarkLabelBackgroundColor != null) 'adMarkLabelBackgroundColor': adMarkLabelBackgroundColor,
-      if (titleColor != null) 'titleColor': titleColor,
-      if (bodyColor != null) 'bodyColor': bodyColor,
-      if (ctaBackgroundColor != null) 'ctaBackgroundColor': ctaBackgroundColor,
-      if (ctaTextColor != null) 'ctaTextColor': ctaTextColor,
+      if (backgroundColor != null) 'backgroundColor': _colorToMap(backgroundColor!),
+      if (containerColor != null) 'containerColor': _colorToMap(containerColor!),
+      if (adMarkLabelTextColor != null) 'adMarkLabelTextColor': _colorToMap(adMarkLabelTextColor!),
+      if (adMarkLabelBackgroundColor != null) 'adMarkLabelBackgroundColor': _colorToMap(adMarkLabelBackgroundColor!),
+      if (titleColor != null) 'titleColor': _colorToMap(titleColor!),
+      if (bodyColor != null) 'bodyColor': _colorToMap(bodyColor!),
+      if (ctaBackgroundColor != null) 'ctaBackgroundColor': _colorToMap(ctaBackgroundColor!),
+      if (ctaTextColor != null) 'ctaTextColor': _colorToMap(ctaTextColor!),
       if (closeButtonText != null) 'closeButtonText': closeButtonText,
-      if (closeButtonColor != null) 'closeButtonColor': closeButtonColor,
+      if (closeButtonColor != null) 'closeButtonColor': _colorToMap(closeButtonColor!),
     };
   }
 }

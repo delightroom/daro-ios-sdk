@@ -2,9 +2,9 @@ package so.daro.flutter
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
-import androidx.core.graphics.toColorInt
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -98,25 +98,26 @@ class DaroFlutterLightPopupAdManager : MethodChannel.MethodCallHandler, EventCha
         val defaults = DaroLightPopupAdOptions()
 
         return DaroLightPopupAdOptions(
-            backgroundColor = call.argument<String>("backgroundColor")?.toColorIntOrNull() ?: defaults.backgroundColor,
-            containerColor = call.argument<String>("containerColor")?.toColorIntOrNull() ?: defaults.containerColor,
-            adMarkLabelTextColor = call.argument<String>("adMarkLabelTextColor")?.toColorIntOrNull() ?: defaults.adMarkLabelTextColor,
-            adMarkLabelBackgroundColor = call.argument<String>("adMarkLabelBackgroundColor")?.toColorIntOrNull() ?: defaults.adMarkLabelBackgroundColor,
-            titleColor = call.argument<String>("titleColor")?.toColorIntOrNull() ?: defaults.titleColor,
-            bodyColor = call.argument<String>("bodyColor")?.toColorIntOrNull() ?: defaults.bodyColor,
-            ctaBackgroundColor = call.argument<String>("ctaBackgroundColor")?.toColorIntOrNull() ?: defaults.ctaBackgroundColor,
-            ctaTextColor = call.argument<String>("ctaTextColor")?.toColorIntOrNull() ?: defaults.ctaTextColor,
+            backgroundColor = parseColorFromMap(call.argument<Map<*, *>>("backgroundColor")) ?: defaults.backgroundColor,
+            containerColor = parseColorFromMap(call.argument<Map<*, *>>("containerColor")) ?: defaults.containerColor,
+            adMarkLabelTextColor = parseColorFromMap(call.argument<Map<*, *>>("adMarkLabelTextColor")) ?: defaults.adMarkLabelTextColor,
+            adMarkLabelBackgroundColor = parseColorFromMap(call.argument<Map<*, *>>("adMarkLabelBackgroundColor")) ?: defaults.adMarkLabelBackgroundColor,
+            titleColor = parseColorFromMap(call.argument<Map<*, *>>("titleColor")) ?: defaults.titleColor,
+            bodyColor = parseColorFromMap(call.argument<Map<*, *>>("bodyColor")) ?: defaults.bodyColor,
+            ctaBackgroundColor = parseColorFromMap(call.argument<Map<*, *>>("ctaBackgroundColor")) ?: defaults.ctaBackgroundColor,
+            ctaTextColor = parseColorFromMap(call.argument<Map<*, *>>("ctaTextColor")) ?: defaults.ctaTextColor,
             closeButtonText = call.argument<String>("closeButtonText") ?: defaults.closeButtonText,
-            closeButtonColor = call.argument<String>("closeButtonColor")?.toColorIntOrNull() ?: defaults.closeButtonColor,
+            closeButtonColor = parseColorFromMap(call.argument<Map<*, *>>("closeButtonColor")) ?: defaults.closeButtonColor,
         )
     }
 
-    private fun String.toColorIntOrNull(): Int? {
-        return try {
-            this.toColorInt()
-        } catch (e: Exception) {
-            null
-        }
+    private fun parseColorFromMap(map: Map<*, *>?): Int? {
+        if (map == null) return null
+        val r = (map["r"] as? Number)?.toInt() ?: return null
+        val g = (map["g"] as? Number)?.toInt() ?: return null
+        val b = (map["b"] as? Number)?.toInt() ?: return null
+        val a = (map["a"] as? Number)?.toInt() ?: return null
+        return Color.argb(a, r, g, b)
     }
 
     private fun setupAdListener(adUnitId: String, ad: DaroLightPopupAd) {

@@ -20,10 +20,10 @@ class DaroLineNativeAdPlatformView(
     context: Context,
     private val viewId: Int,
     private val adUnitId: String,
-    private val backgroundColor: String?,
-    private val contentColor: String?,
-    private val adMarkLabelTextColor: String?,
-    private val adMarkLabelBackgroundColor: String?,
+    private val backgroundColor: Int?,
+    private val contentColor: Int?,
+    private val adMarkLabelTextColor: Int?,
+    private val adMarkLabelBackgroundColor: Int?,
     messenger: BinaryMessenger
 ) : PlatformView {
 
@@ -54,10 +54,10 @@ class DaroLineNativeAdPlatformView(
         this.nativeAdView = nativeAdView
 
         val template = DaroNativeAdTemplate.LineCenter(
-            backgroundColor = parseColor(backgroundColor, Color.TRANSPARENT),
-            contentColor = parseColor(contentColor, Color.BLACK),
-            adMarkLabelBackgroundColor = parseColor(adMarkLabelBackgroundColor, Color.LTGRAY),
-            adMarkLabelTextColor = parseColor(adMarkLabelTextColor, Color.WHITE)
+            backgroundColor = backgroundColor ?: Color.TRANSPARENT,
+            contentColor = contentColor ?: Color.BLACK,
+            adMarkLabelBackgroundColor = adMarkLabelBackgroundColor ?: Color.LTGRAY,
+            adMarkLabelTextColor = adMarkLabelTextColor ?: Color.WHITE
         )
         val adBinder = DaroNativeAdBinder.fromTemplate(context, template)
         nativeAdView.setAdBinder(adBinder)
@@ -119,24 +119,4 @@ class DaroLineNativeAdPlatformView(
         methodChannel.invokeMethod("onAdEvent", arguments)
     }
 
-    private fun parseColor(hexString: String?, defaultColor: Int): Int {
-        if (hexString.isNullOrEmpty()) return defaultColor
-
-        return try {
-            val hex = hexString.removePrefix("#")
-            when (hex.length) {
-                6 -> Color.parseColor("#$hex")
-                8 -> {
-                    val alpha = hex.substring(0, 2).toInt(16)
-                    val rgb = hex.substring(2)
-                    Color.parseColor("#$rgb").let { color ->
-                        Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color))
-                    }
-                }
-                else -> defaultColor
-            }
-        } catch (e: Exception) {
-            defaultColor
-        }
-    }
 }

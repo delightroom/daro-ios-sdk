@@ -8,10 +8,10 @@ import '../models/daro_ad_info.dart';
 import '../models/daro_ad_load_error.dart';
 
 class DaroLineNativeAdStyle {
-  final String? backgroundColor;
-  final String? contentColor;
-  final String? adMarkLabelTextColor;
-  final String? adMarkLabelBackgroundColor;
+  final Color? backgroundColor;
+  final Color? contentColor;
+  final Color? adMarkLabelTextColor;
+  final Color? adMarkLabelBackgroundColor;
 
   const DaroLineNativeAdStyle({
     this.backgroundColor,
@@ -20,12 +20,21 @@ class DaroLineNativeAdStyle {
     this.adMarkLabelBackgroundColor,
   });
 
+  static Map<String, int> _colorToMap(Color color) {
+    return {
+      'r': color.red,
+      'g': color.green,
+      'b': color.blue,
+      'a': color.alpha,
+    };
+  }
+
   Map<String, dynamic> toMap() {
     return {
-      if (backgroundColor != null) 'backgroundColor': backgroundColor,
-      if (contentColor != null) 'contentColor': contentColor,
-      if (adMarkLabelTextColor != null) 'adMarkLabelTextColor': adMarkLabelTextColor,
-      if (adMarkLabelBackgroundColor != null) 'adMarkLabelBackgroundColor': adMarkLabelBackgroundColor,
+      if (backgroundColor != null) 'backgroundColor': _colorToMap(backgroundColor!),
+      if (contentColor != null) 'contentColor': _colorToMap(contentColor!),
+      if (adMarkLabelTextColor != null) 'adMarkLabelTextColor': _colorToMap(adMarkLabelTextColor!),
+      if (adMarkLabelBackgroundColor != null) 'adMarkLabelBackgroundColor': _colorToMap(adMarkLabelBackgroundColor!),
     };
   }
 }

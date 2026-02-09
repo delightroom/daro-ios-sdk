@@ -70,64 +70,53 @@ class DaroLightPopupAdManager: NSObject, FlutterStreamHandler {
     private func buildConfiguration(from args: [String: Any]?) -> DaroLightPopupConfiguration {
         let configuration = DaroLightPopupConfiguration()
 
-        if let backgroundColor = args?["backgroundColor"] as? String {
-            configuration.backgroundColor = colorFromHex(backgroundColor)
+        if let map = args?["backgroundColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.backgroundColor = color
         }
-        if let containerColor = args?["containerColor"] as? String {
-            configuration.cardViewBackgroundColor = colorFromHex(containerColor)
+        if let map = args?["containerColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.cardViewBackgroundColor = color
         }
-        if let adMarkLabelTextColor = args?["adMarkLabelTextColor"] as? String {
-            configuration.adMarkLabelTextColor = colorFromHex(adMarkLabelTextColor)
+        if let map = args?["adMarkLabelTextColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.adMarkLabelTextColor = color
         }
-        if let adMarkLabelBackgroundColor = args?["adMarkLabelBackgroundColor"] as? String {
-            configuration.adMarkLabelBackgroundColor = colorFromHex(adMarkLabelBackgroundColor)
+        if let map = args?["adMarkLabelBackgroundColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.adMarkLabelBackgroundColor = color
         }
-        if let titleColor = args?["titleColor"] as? String {
-            configuration.titleTextColor = colorFromHex(titleColor)
+        if let map = args?["titleColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.titleTextColor = color
         }
-        if let bodyColor = args?["bodyColor"] as? String {
-            configuration.bodyTextColor = colorFromHex(bodyColor)
+        if let map = args?["bodyColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.bodyTextColor = color
         }
-        if let ctaBackgroundColor = args?["ctaBackgroundColor"] as? String {
-            configuration.ctaButtonBackgroundColor = colorFromHex(ctaBackgroundColor)
+        if let map = args?["ctaBackgroundColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.ctaButtonBackgroundColor = color
         }
-        if let ctaTextColor = args?["ctaTextColor"] as? String {
-            configuration.ctaButtonTextColor = colorFromHex(ctaTextColor)
+        if let map = args?["ctaTextColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.ctaButtonTextColor = color
         }
         if let closeButtonText = args?["closeButtonText"] as? String {
             configuration.closeButtonText = closeButtonText
         }
-        if let closeButtonColor = args?["closeButtonColor"] as? String {
-            configuration.closeButtonTextColor = colorFromHex(closeButtonColor)
+        if let map = args?["closeButtonColor"] as? [String: Any], let color = colorFromMap(map) {
+            configuration.closeButtonTextColor = color
         }
 
         return configuration
     }
 
-    private func colorFromHex(_ hexString: String) -> UIColor {
-        var hex = hexString.trimmingCharacters(in: .whitespacesAndNewlines)
-        if hex.hasPrefix("#") {
-            hex.removeFirst()
+    private func colorFromMap(_ map: [String: Any]) -> UIColor? {
+        guard let r = map["r"] as? Int,
+              let g = map["g"] as? Int,
+              let b = map["b"] as? Int,
+              let a = map["a"] as? Int else {
+            return nil
         }
-
-        var rgbValue: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&rgbValue)
-
-        if hex.count == 8 {
-            return UIColor(
-                red: CGFloat((rgbValue & 0xFF000000) >> 24) / 255.0,
-                green: CGFloat((rgbValue & 0x00FF0000) >> 16) / 255.0,
-                blue: CGFloat((rgbValue & 0x0000FF00) >> 8) / 255.0,
-                alpha: CGFloat(rgbValue & 0x000000FF) / 255.0
-            )
-        } else {
-            return UIColor(
-                red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-                green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-                blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-                alpha: 1.0
-            )
-        }
+        return UIColor(
+            red: CGFloat(r) / 255.0,
+            green: CGFloat(g) / 255.0,
+            blue: CGFloat(b) / 255.0,
+            alpha: CGFloat(a) / 255.0
+        )
     }
 
     private func setupAdListener(adUnitId: String, ad: DaroLightPopupAd) {
