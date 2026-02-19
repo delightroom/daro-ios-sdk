@@ -136,12 +136,9 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
 
     DaroAds.shared.initialized { error in
       if let error = error {
-        result(FlutterError(code: "INIT_ERROR",
-                          message: "DaroAds initialization failed: \(error.localizedDescription)",
-                          details: nil))
-      } else {
-        result(nil)
+        NSLog("[DaroFlutter] initialization failed: \(error.localizedDescription)")
       }
     }
+    result(nil)
   }
 }
