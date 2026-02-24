@@ -4,25 +4,20 @@ import Daro
 class DaroLineNativeAdPlatformView: NSObject, FlutterPlatformView {
     private let containerView: UIView
     private var lineNativeAdView: DaroAdLineBannerView
-    private let messenger: FlutterBinaryMessenger
-    private let viewId: Int64
-    private let methodChannel: FlutterMethodChannel
+    private let adId: Int
+    private let channel: FlutterMethodChannel
 
     init(
         frame: CGRect,
-        viewId: Int64,
+        adId: Int,
         adUnitId: String,
         configuration: DaroLineNativeAdConfiguration,
-        messenger: FlutterBinaryMessenger
+        channel: FlutterMethodChannel
     ) {
         self.containerView = UIView(frame: frame)
         self.containerView.backgroundColor = .clear
-        self.messenger = messenger
-        self.viewId = viewId
-        self.methodChannel = FlutterMethodChannel(
-            name: "daro_flutter/line_native_ad",
-            binaryMessenger: messenger
-        )
+        self.adId = adId
+        self.channel = channel
 
         let adUnit = DaroAdUnit(unitId: adUnitId)
         self.lineNativeAdView = DaroAdLineBannerView(unit: adUnit, autoLoad: false)
@@ -31,7 +26,6 @@ class DaroLineNativeAdPlatformView: NSObject, FlutterPlatformView {
         super.init()
 
         setupLineNativeAd()
-        setupMethodChannel()
     }
 
     func view() -> UIView {
@@ -71,32 +65,9 @@ class DaroLineNativeAdPlatformView: NSObject, FlutterPlatformView {
         lineNativeAdView.loadAd()
     }
 
-    private func setupMethodChannel() {
-        methodChannel.setMethodCallHandler { [weak self] (call, result) in
-            guard let self = self else {
-                result(FlutterError(code: "UNAVAILABLE", message: "View disposed", details: nil))
-                return
-            }
-
-            switch call.method {
-            case "loadAd":
-                guard let args = call.arguments as? [String: Any],
-                      let requestViewId = args["viewId"] as? Int64,
-                      requestViewId == self.viewId else {
-                    result(FlutterError(code: "INVALID_ARGS", message: "Invalid viewId", details: nil))
-                    return
-                }
-                self.lineNativeAdView.loadAd()
-                result(nil)
-            default:
-                result(FlutterMethodNotImplemented)
-            }
-        }
-    }
-
     private func sendEvent(event: String, error: [String: Any]? = nil) {
         var arguments: [String: Any] = [
-            "viewId": viewId,
+            "adId": adId,
             "event": event,
         ]
 
@@ -104,6 +75,6 @@ class DaroLineNativeAdPlatformView: NSObject, FlutterPlatformView {
             arguments["error"] = error
         }
 
-        methodChannel.invokeMethod("onAdEvent", arguments: arguments)
+        channel.invokeMethod("onAdEvent", arguments: arguments)
     }
 }

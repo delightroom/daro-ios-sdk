@@ -15,27 +15,23 @@ import droom.daro.core.model.DaroViewAd
 
 class DaroNativeAdPlatformView(
     context: Context,
-    private val viewId: Int,
+    private val adId: Int,
     private val adUnitId: String,
     private val factory: DaroNativeAdFactory,
-    private val messenger: io.flutter.plugin.common.BinaryMessenger
+    private val channel: MethodChannel
 ) : PlatformView {
 
     private val containerView: FrameLayout = FrameLayout(context)
     private var nativeAdView: DaroNativeAdView? = null
-    private val methodChannel: MethodChannel = MethodChannel(
-        messenger,
-        "daro_flutter/native_ad"
-    )
 
     init {
         setupNativeAd(context)
-        setupMethodChannel()
     }
 
     override fun getView(): View = containerView
 
     override fun dispose() {
+        nativeAdView?.destroy()
         nativeAdView = null
     }
 
@@ -56,7 +52,10 @@ class DaroNativeAdPlatformView(
             }
 
             override fun onAdLoadFail(err: DaroAdLoadError) {
-                sendEvent("onAdFailedToLoad", error = err.message ?: "Unknown error")
+                sendEvent("onAdFailedToLoad", mapOf(
+                    "code" to (err.code ?: -1),
+                    "message" to (err.message ?: "Unknown error")
+                ))
             }
 
             override fun onAdClicked(adInfo: DaroAdInfo) {
@@ -79,30 +78,13 @@ class DaroNativeAdPlatformView(
         nativeAdView.loadAd()
     }
 
-    private fun setupMethodChannel() {
-        methodChannel.setMethodCallHandler { call, result ->
-            when (call.method) {
-                "loadAd" -> {
-                    val requestViewId = call.argument<Int>("viewId")
-                    if (requestViewId != viewId) {
-                        result.error("INVALID_ARGS", "Invalid viewId", null)
-                        return@setMethodCallHandler
-                    }
-                    nativeAdView?.loadAd()
-                    result.success(null)
-                }
-                else -> result.notImplemented()
-            }
-        }
-    }
-
-    private fun sendEvent(event: String, error: String? = null) {
+    private fun sendEvent(event: String, error: Map<String, Any>? = null) {
         val arguments = mutableMapOf<String, Any>(
-            "viewId" to viewId,
+            "adId" to adId,
             "event" to event
         )
         error?.let { arguments["error"] = it }
 
-        methodChannel.invokeMethod("onAdEvent", arguments)
+        channel.invokeMethod("onAdEvent", arguments)
     }
 }

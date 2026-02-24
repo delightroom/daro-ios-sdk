@@ -58,6 +58,15 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
     }
     lightPopupEventChannel.setStreamHandler(lightPopupManager)
 
+    // ad_manager 채널: view-based 광고(배너/네이티브/라인네이티브) 로드/파괴
+    let adManagerChannel = FlutterMethodChannel(
+      name: "daro_flutter/ad_manager",
+      binaryMessenger: registrar.messenger()
+    )
+    adManagerChannel.setMethodCallHandler { call, result in
+      instance.handleAdManager(call, result: result, messenger: registrar.messenger(), channel: adManagerChannel)
+    }
+
     // 네이티브 광고 팩토리 등록
     let nativeFactory = DaroNativeAdViewFactory(messenger: registrar.messenger())
     registrar.register(
@@ -82,10 +91,6 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
   }
 
   /// 네이티브 광고 팩토리를 등록할 수 있는 공개 메서드
-  ///
-  /// - Parameters:
-  ///   - factory: DaroNativeAdFactory 프로토콜을 구현한 객체
-  ///   - factoryId: 팩토리를 식별하는 고유 ID
   public static func registerNativeAdFactory(
     _ factory: DaroNativeAdFactory,
     factoryId: String
@@ -110,6 +115,121 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
     default:
       result(FlutterMethodNotImplemented)
     }
+  }
+
+  private func handleAdManager(
+    _ call: FlutterMethodCall,
+    result: @escaping FlutterResult,
+    messenger: FlutterBinaryMessenger,
+    channel: FlutterMethodChannel
+  ) {
+    let args = call.arguments as? [String: Any] ?? [:]
+
+    switch call.method {
+    case "loadBannerAd":
+      guard let adId = args["adId"] as? Int,
+            let adUnitId = args["adUnitId"] as? String,
+            let sizeString = args["size"] as? String else {
+        result(FlutterError(code: "INVALID_ARGS", message: "Missing required arguments", details: nil))
+        return
+      }
+
+      let bannerSize: DaroAdBannerSize = sizeString == "mrec" ? .MREC : .banner
+      let platformView = DaroBannerAdPlatformView(
+        frame: .zero,
+        adId: adId,
+        adUnitId: adUnitId,
+        bannerSize: bannerSize,
+        channel: channel
+      )
+      DaroAdInstanceManager.shared.store(platformView, forId: adId)
+      result(nil)
+
+    case "loadNativeAd":
+      guard let adId = args["adId"] as? Int,
+            let adUnitId = args["adUnitId"] as? String,
+            let factoryId = args["factoryId"] as? String else {
+        result(FlutterError(code: "INVALID_ARGS", message: "Missing required arguments", details: nil))
+        return
+      }
+
+      guard let factory = Self.nativeAdViewFactory?.getFactory(withId: factoryId) else {
+        result(FlutterError(code: "FACTORY_NOT_FOUND", message: "Factory not registered: \(factoryId)", details: nil))
+        return
+      }
+
+      let platformView = DaroNativeAdPlatformView(
+        frame: .zero,
+        adId: adId,
+        adUnitId: adUnitId,
+        factory: factory,
+        channel: channel
+      )
+      DaroAdInstanceManager.shared.store(platformView, forId: adId)
+      result(nil)
+
+    case "loadLineNativeAd":
+      guard let adId = args["adId"] as? Int,
+            let adUnitId = args["adUnitId"] as? String else {
+        result(FlutterError(code: "INVALID_ARGS", message: "Missing required arguments", details: nil))
+        return
+      }
+
+      let configuration = DaroLineNativeAdConfiguration()
+
+      if let backgroundColor = args["backgroundColor"] as? [String: Any],
+         let color = colorFromMap(backgroundColor) {
+        configuration.backgroundColor = color
+      }
+      if let contentColor = args["contentColor"] as? [String: Any],
+         let color = colorFromMap(contentColor) {
+        configuration.titleTextColor = color
+      }
+      if let adMarkLabelTextColor = args["adMarkLabelTextColor"] as? [String: Any],
+         let color = colorFromMap(adMarkLabelTextColor) {
+        configuration.adMarkTextColor = color
+      }
+      if let adMarkLabelBackgroundColor = args["adMarkLabelBackgroundColor"] as? [String: Any],
+         let color = colorFromMap(adMarkLabelBackgroundColor) {
+        configuration.adMarkBackgroundColor = color
+      }
+
+      let platformView = DaroLineNativeAdPlatformView(
+        frame: .zero,
+        adId: adId,
+        adUnitId: adUnitId,
+        configuration: configuration,
+        channel: channel
+      )
+      DaroAdInstanceManager.shared.store(platformView, forId: adId)
+      result(nil)
+
+    case "disposeAd":
+      guard let adId = args["adId"] as? Int else {
+        result(FlutterError(code: "INVALID_ARGS", message: "Missing adId", details: nil))
+        return
+      }
+      DaroAdInstanceManager.shared.remove(forId: adId)
+      result(nil)
+
+    default:
+      result(FlutterMethodNotImplemented)
+    }
+  }
+
+  private func colorFromMap(_ map: [String: Any]) -> UIColor? {
+    guard let r = map["r"] as? Int,
+          let g = map["g"] as? Int,
+          let b = map["b"] as? Int,
+          let a = map["a"] as? Int else {
+      return nil
+    }
+    return UIColor(
+      red: CGFloat(r) / 255.0,
+      green: CGFloat(g) / 255.0,
+      blue: CGFloat(b) / 255.0,
+      alpha: CGFloat(a) / 255.0
+    )
   }
 
   private func initializeDaroSDK(call: FlutterMethodCall, result: @escaping FlutterResult) {

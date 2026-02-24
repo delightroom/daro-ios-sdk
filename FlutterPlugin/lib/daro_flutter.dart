@@ -11,10 +11,13 @@ export 'src/interstitial_ad/daro_interstitial_ad.dart';
 export 'src/rewarded_ad/daro_rewarded_ad.dart';
 export 'src/appopen_ad/daro_appopen_ad.dart';
 export 'src/lightpopup_ad/daro_lightpopup_ad.dart';
-export 'src/native_ad/daro_native_ad_widget.dart';
-export 'src/native_ad/daro_line_native_ad_widget.dart';
+export 'src/banner/daro_banner_ad.dart';
 export 'src/banner/daro_banner_ad_widget.dart';
 export 'src/banner/daro_banner_size.dart';
+export 'src/native_ad/daro_native_ad.dart';
+export 'src/native_ad/daro_native_ad_widget.dart';
+export 'src/native_ad/daro_line_native_ad.dart';
+export 'src/native_ad/daro_line_native_ad_widget.dart';
 
 class DaroFlutter {
   static const MethodChannel _channel = MethodChannel('daro_flutter');

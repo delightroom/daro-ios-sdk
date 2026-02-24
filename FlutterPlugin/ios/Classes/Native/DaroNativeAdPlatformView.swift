@@ -4,25 +4,20 @@ import Daro
 class DaroNativeAdPlatformView: NSObject, FlutterPlatformView {
     private let containerView: UIView
     private var nativeAdView: DaroAdNativeView
-    private let messenger: FlutterBinaryMessenger
-    private let viewId: Int64
-    private let methodChannel: FlutterMethodChannel
+    private let adId: Int
+    private let channel: FlutterMethodChannel
 
     init(
         frame: CGRect,
-        viewId: Int64,
+        adId: Int,
         adUnitId: String,
         factory: DaroNativeAdFactory,
-        messenger: FlutterBinaryMessenger
+        channel: FlutterMethodChannel
     ) {
         self.containerView = UIView(frame: frame)
         self.containerView.backgroundColor = .clear
-        self.messenger = messenger
-        self.viewId = viewId
-        self.methodChannel = FlutterMethodChannel(
-            name: "daro_flutter/native_ad",
-            binaryMessenger: messenger
-        )
+        self.adId = adId
+        self.channel = channel
 
         let adUnit = DaroAdUnit(unitId: adUnitId)
         self.nativeAdView = factory.createNativeAdView(unit: adUnit)
@@ -30,7 +25,6 @@ class DaroNativeAdPlatformView: NSObject, FlutterPlatformView {
         super.init()
 
         setupNativeAd()
-        setupMethodChannel()
     }
 
     func view() -> UIView {
@@ -45,7 +39,7 @@ class DaroNativeAdPlatformView: NSObject, FlutterPlatformView {
 
         nativeAdView.listener.onAdLoadFail = { [weak self] (error: Error) in
             guard let self = self else { return }
-            self.sendEvent(event: "onAdFailedToLoad", error: error.localizedDescription)
+            self.sendEvent(event: "onAdFailedToLoad", error: ["code": -1, "message": error.localizedDescription])
         }
 
         nativeAdView.listener.onAdClicked = { [weak self] (_: DaroAdInfo?) in
@@ -70,32 +64,9 @@ class DaroNativeAdPlatformView: NSObject, FlutterPlatformView {
         nativeAdView.loadAd()
     }
 
-    private func setupMethodChannel() {
-        methodChannel.setMethodCallHandler { [weak self] (call, result) in
-            guard let self = self else {
-                result(FlutterError(code: "UNAVAILABLE", message: "View disposed", details: nil))
-                return
-            }
-
-            switch call.method {
-            case "loadAd":
-                guard let args = call.arguments as? [String: Any],
-                      let requestViewId = args["viewId"] as? Int64,
-                      requestViewId == self.viewId else {
-                    result(FlutterError(code: "INVALID_ARGS", message: "Invalid viewId", details: nil))
-                    return
-                }
-                self.nativeAdView.loadAd()
-                result(nil)
-            default:
-                result(FlutterMethodNotImplemented)
-            }
-        }
-    }
-
-    private func sendEvent(event: String, error: String? = nil) {
+    private func sendEvent(event: String, error: [String: Any]? = nil) {
         var arguments: [String: Any] = [
-            "viewId": viewId,
+            "adId": adId,
             "event": event,
         ]
 
@@ -103,6 +74,6 @@ class DaroNativeAdPlatformView: NSObject, FlutterPlatformView {
             arguments["error"] = error
         }
 
-        methodChannel.invokeMethod("onAdEvent", arguments: arguments)
+        channel.invokeMethod("onAdEvent", arguments: arguments)
     }
 }

@@ -4,33 +4,27 @@ import Daro
 class DaroBannerAdPlatformView: NSObject, FlutterPlatformView {
     private let containerView: UIView
     private var bannerView: DaroAdBannerView
-    private let messenger: FlutterBinaryMessenger
-    private let viewId: Int64
-    private let methodChannel: FlutterMethodChannel
+    private let adId: Int
+    private let channel: FlutterMethodChannel
 
     init(
         frame: CGRect,
-        viewId: Int64,
+        adId: Int,
         adUnitId: String,
         bannerSize: DaroAdBannerSize,
-        messenger: FlutterBinaryMessenger
+        channel: FlutterMethodChannel
     ) {
         self.containerView = UIView(frame: frame)
         self.containerView.backgroundColor = .clear
-        self.messenger = messenger
-        self.viewId = viewId
-        self.methodChannel = FlutterMethodChannel(
-            name: "daro_flutter/banner_ad",
-            binaryMessenger: messenger
-        )
+        self.adId = adId
+        self.channel = channel
 
         let adUnit = DaroAdUnit(unitId: adUnitId)
-        self.bannerView = DaroAdBannerView(unit: adUnit, bannerSize: bannerSize)
+        self.bannerView = DaroAdBannerView(unit: adUnit, bannerSize: bannerSize, autoLoad: false)
 
         super.init()
 
         setupBannerAd()
-        setupMethodChannel()
     }
 
     func view() -> UIView {
@@ -66,34 +60,13 @@ class DaroBannerAdPlatformView: NSObject, FlutterPlatformView {
             bannerView.topAnchor.constraint(equalTo: containerView.topAnchor),
             bannerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
-    }
 
-    private func setupMethodChannel() {
-        methodChannel.setMethodCallHandler { [weak self] (call, result) in
-            guard let self = self else {
-                result(FlutterError(code: "UNAVAILABLE", message: "View disposed", details: nil))
-                return
-            }
-
-            switch call.method {
-            case "loadAd":
-                guard let args = call.arguments as? [String: Any],
-                      let requestViewId = args["viewId"] as? Int64,
-                      requestViewId == self.viewId else {
-                    result(FlutterError(code: "INVALID_ARGS", message: "Invalid viewId", details: nil))
-                    return
-                }
-                self.bannerView.loadAd()
-                result(nil)
-            default:
-                result(FlutterMethodNotImplemented)
-            }
-        }
+        bannerView.loadAd()
     }
 
     private func sendEvent(event: String, error: [String: Any]? = nil) {
         var arguments: [String: Any] = [
-            "viewId": viewId,
+            "adId": adId,
             "event": event,
         ]
 
@@ -101,6 +74,6 @@ class DaroBannerAdPlatformView: NSObject, FlutterPlatformView {
             arguments["error"] = error
         }
 
-        methodChannel.invokeMethod("onAdEvent", arguments: arguments)
+        channel.invokeMethod("onAdEvent", arguments: arguments)
     }
 }

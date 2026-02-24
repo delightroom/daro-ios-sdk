@@ -150,7 +150,7 @@ class DaroAppOpenAd {
     });
   }
 
-  Future<void> destroy() async {
+  Future<void> dispose() async {
     try {
       await _methodChannel.invokeMethod('destroyAd', {
         'adUnitId': adUnitId,

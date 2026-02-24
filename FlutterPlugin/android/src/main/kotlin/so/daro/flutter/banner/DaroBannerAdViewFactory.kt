@@ -1,10 +1,12 @@
 package so.daro.flutter.banner
 
 import android.content.Context
+import android.view.View
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
+import so.daro.flutter.DaroAdInstanceManager
 
 class DaroBannerAdViewFactory(
     private val context: Context,
@@ -17,17 +19,15 @@ class DaroBannerAdViewFactory(
         args: Any?
     ): PlatformView {
         val params = args as? Map<*, *> ?: emptyMap<String, Any>()
-        val adUnitId = params["adUnitId"] as? String
-            ?: throw IllegalArgumentException("adUnitId is required")
-        val sizeString = params["size"] as? String
-            ?: throw IllegalArgumentException("size is required")
+        val adId = params["adId"] as? Int
 
-        return DaroBannerAdPlatformView(
-            context,
-            viewId,
-            adUnitId,
-            sizeString,
-            messenger
-        )
+        if (adId != null) {
+            DaroAdInstanceManager.get(adId)?.let { return it }
+        }
+
+        return object : PlatformView {
+            override fun getView(): View = View(context)
+            override fun dispose() {}
+        }
     }
 }

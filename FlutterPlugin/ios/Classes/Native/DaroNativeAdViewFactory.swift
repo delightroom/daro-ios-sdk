@@ -14,25 +14,22 @@ class DaroNativeAdViewFactory: NSObject, FlutterPlatformViewFactory {
         factoryRegistry[id] = factory
     }
 
+    func getFactory(withId id: String) -> DaroNativeAdFactory? {
+        return factoryRegistry[id]
+    }
+
     func create(
         withFrame frame: CGRect,
         viewIdentifier viewId: Int64,
         arguments args: Any?
     ) -> FlutterPlatformView {
         guard let params = args as? [String: Any],
-              let factoryId = params["factoryId"] as? String,
-              let adUnitId = params["adUnitId"] as? String,
-              let factory = factoryRegistry[factoryId] else {
-            fatalError("Factory not registered: \(String(describing: args))")
+              let adId = params["adId"] as? Int,
+              let platformView = DaroAdInstanceManager.shared.get(forId: adId) else {
+            fatalError("Native ad not found in cache. Call load() before mounting widget. Args: \(String(describing: args))")
         }
 
-        return DaroNativeAdPlatformView(
-            frame: frame,
-            viewId: viewId,
-            adUnitId: adUnitId,
-            factory: factory,
-            messenger: messenger
-        )
+        return platformView
     }
 
     func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {

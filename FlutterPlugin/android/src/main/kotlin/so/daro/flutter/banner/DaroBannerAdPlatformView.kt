@@ -3,7 +3,6 @@ package so.daro.flutter.banner
 import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
-import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import droom.daro.core.adunit.DaroBannerAdUnit
@@ -16,27 +15,23 @@ import droom.daro.core.model.DaroViewAd
 
 class DaroBannerAdPlatformView(
     context: Context,
-    private val viewId: Int,
+    private val adId: Int,
     private val adUnitId: String,
     private val sizeString: String,
-    private val messenger: BinaryMessenger
+    private val channel: MethodChannel
 ) : PlatformView {
 
     private val containerView: FrameLayout = FrameLayout(context)
     private var bannerAdView: DaroBannerAdView? = null
-    private val methodChannel: MethodChannel = MethodChannel(
-        messenger,
-        "daro_flutter/banner_ad"
-    )
 
     init {
         setupBannerAd(context)
-        setupMethodChannel()
     }
 
     override fun getView(): View = containerView
 
     override fun dispose() {
+        bannerAdView?.destroy()
         bannerAdView = null
     }
 
@@ -86,30 +81,13 @@ class DaroBannerAdPlatformView(
         bannerAdView.loadAd()
     }
 
-    private fun setupMethodChannel() {
-        methodChannel.setMethodCallHandler { call, result ->
-            when (call.method) {
-                "loadAd" -> {
-                    val requestViewId = call.argument<Int>("viewId")
-                    if (requestViewId != viewId) {
-                        result.error("INVALID_ARGS", "Invalid viewId", null)
-                        return@setMethodCallHandler
-                    }
-                    bannerAdView?.loadAd()
-                    result.success(null)
-                }
-                else -> result.notImplemented()
-            }
-        }
-    }
-
     private fun sendEvent(event: String, error: Map<String, Any>? = null) {
         val arguments = mutableMapOf<String, Any>(
-            "viewId" to viewId,
+            "adId" to adId,
             "event" to event
         )
         error?.let { arguments["error"] = it }
 
-        methodChannel.invokeMethod("onAdEvent", arguments)
+        channel.invokeMethod("onAdEvent", arguments)
     }
 }

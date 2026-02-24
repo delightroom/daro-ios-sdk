@@ -2,6 +2,7 @@ package so.daro.flutter
 
 import android.app.Application
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -16,12 +17,16 @@ import droom.daro.SDKConfig
 import droom.daro.a.Daro
 import so.daro.flutter.native.DaroNativeAdFactory
 import so.daro.flutter.native.DaroNativeAdViewFactory
+import so.daro.flutter.native.DaroNativeAdPlatformView
 import so.daro.flutter.banner.DaroBannerAdViewFactory
+import so.daro.flutter.banner.DaroBannerAdPlatformView
 import so.daro.flutter.linenative.DaroLineNativeAdViewFactory
+import so.daro.flutter.linenative.DaroLineNativeAdPlatformView
 
 class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   private lateinit var channel: MethodChannel
   private lateinit var context: Context
+  private var adManagerChannel: MethodChannel? = null
   private var interstitialAdManager: DaroInterstitialAdManager? = null
   private var rewardedAdManager: DaroRewardedAdManager? = null
   private var appOpenAdManager: DaroFlutterAppOpenAdManager? = null
@@ -30,12 +35,6 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   companion object {
     private var nativeAdViewFactory: DaroNativeAdViewFactory? = null
 
-    /**
-     * 네이티브 광고 팩토리를 등록할 수 있는 공개 메서드
-     *
-     * @param factory DaroNativeAdFactory 인터페이스를 구현한 객체
-     * @param factoryId 팩토리를 식별하는 고유 ID
-     */
     @JvmStatic
     fun registerNativeAdFactory(factory: DaroNativeAdFactory, factoryId: String) {
       nativeAdViewFactory?.registerFactory(factory, factoryId)
@@ -85,6 +84,13 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     lightPopupMethodChannel.setMethodCallHandler(lightPopupManager)
     lightPopupEventChannel.setStreamHandler(lightPopupManager)
 
+    // ad_manager 채널: view-based 광고 로드/파괴
+    val adMgrChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "daro_flutter/ad_manager")
+    adManagerChannel = adMgrChannel
+    adMgrChannel.setMethodCallHandler { call, result ->
+      handleAdManager(call, result, adMgrChannel)
+    }
+
     val nativeFactory = DaroNativeAdViewFactory(context, flutterPluginBinding.binaryMessenger)
     flutterPluginBinding.platformViewRegistry.registerViewFactory(
       "daro_native_ad_view",
@@ -92,14 +98,12 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     )
     nativeAdViewFactory = nativeFactory
 
-    // 배너 광고 팩토리 등록
     val bannerFactory = DaroBannerAdViewFactory(context, flutterPluginBinding.binaryMessenger)
     flutterPluginBinding.platformViewRegistry.registerViewFactory(
       "daro_banner_ad_view",
       bannerFactory
     )
 
-    // 라인 네이티브 광고 팩토리 등록
     val lineNativeFactory = DaroLineNativeAdViewFactory(context, flutterPluginBinding.binaryMessenger)
     flutterPluginBinding.platformViewRegistry.registerViewFactory(
       "daro_line_native_ad_view",
@@ -129,6 +133,84 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         result.notImplemented()
       }
     }
+  }
+
+  private fun handleAdManager(call: MethodCall, result: Result, channel: MethodChannel) {
+    val args = call.arguments as? Map<*, *> ?: emptyMap<String, Any>()
+
+    when (call.method) {
+      "loadBannerAd" -> {
+        val adId = args["adId"] as? Int
+            ?: return result.error("INVALID_ARGS", "Missing adId", null)
+        val adUnitId = args["adUnitId"] as? String
+            ?: return result.error("INVALID_ARGS", "Missing adUnitId", null)
+        val sizeString = args["size"] as? String
+            ?: return result.error("INVALID_ARGS", "Missing size", null)
+
+        val platformView = DaroBannerAdPlatformView(
+          context, adId, adUnitId, sizeString, channel
+        )
+        DaroAdInstanceManager.store(platformView, adId)
+        result.success(null)
+      }
+
+      "loadNativeAd" -> {
+        val adId = args["adId"] as? Int
+            ?: return result.error("INVALID_ARGS", "Missing adId", null)
+        val adUnitId = args["adUnitId"] as? String
+            ?: return result.error("INVALID_ARGS", "Missing adUnitId", null)
+        val factoryId = args["factoryId"] as? String
+            ?: return result.error("INVALID_ARGS", "Missing factoryId", null)
+
+        val factory = nativeAdViewFactory?.getFactory(factoryId)
+            ?: return result.error("FACTORY_NOT_FOUND", "Factory not registered: $factoryId", null)
+
+        val platformView = DaroNativeAdPlatformView(
+          context, adId, adUnitId, factory, channel
+        )
+        DaroAdInstanceManager.store(platformView, adId)
+        result.success(null)
+      }
+
+      "loadLineNativeAd" -> {
+        val adId = args["adId"] as? Int
+            ?: return result.error("INVALID_ARGS", "Missing adId", null)
+        val adUnitId = args["adUnitId"] as? String
+            ?: return result.error("INVALID_ARGS", "Missing adUnitId", null)
+
+        val backgroundColor = parseColorFromMap(args["backgroundColor"])
+        val contentColor = parseColorFromMap(args["contentColor"])
+        val adMarkLabelTextColor = parseColorFromMap(args["adMarkLabelTextColor"])
+        val adMarkLabelBackgroundColor = parseColorFromMap(args["adMarkLabelBackgroundColor"])
+
+        val platformView = DaroLineNativeAdPlatformView(
+          context, adId, adUnitId,
+          backgroundColor, contentColor,
+          adMarkLabelTextColor, adMarkLabelBackgroundColor,
+          channel
+        )
+        DaroAdInstanceManager.store(platformView, adId)
+        result.success(null)
+      }
+
+      "disposeAd" -> {
+        val adId = args["adId"] as? Int
+            ?: return result.error("INVALID_ARGS", "Missing adId", null)
+        DaroAdInstanceManager.remove(adId)
+        result.success(null)
+      }
+
+      else -> result.notImplemented()
+    }
+  }
+
+  private fun parseColorFromMap(value: Any?): Int? {
+    val map = value as? Map<*, *> ?: return null
+    val r = (map["r"] as? Number)?.toInt() ?: return null
+    val g = (map["g"] as? Number)?.toInt() ?: return null
+    val b = (map["b"] as? Number)?.toInt() ?: return null
+    val a = (map["a"] as? Number)?.toInt() ?: return null
+    return Color.argb(a, r, g, b)
   }
 
   private fun initializeDaroSDK(call: MethodCall, result: Result) {
@@ -185,6 +267,7 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
+    adManagerChannel?.setMethodCallHandler(null)
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
