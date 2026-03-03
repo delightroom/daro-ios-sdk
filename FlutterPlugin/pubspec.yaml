@@ -1,11 +1,16 @@
 name: daro_flutter
-description: Daro Flutter SDK - A simple hello world package
-version: 1.0.2
-homepage: https://github.com/delightroom/daro-flutter-sdk
-repository: https://github.com/delightroom/daro-flutter-sdk
+description: Daro Flutter SDK
+version: 1.0.0
+homepage: https://guide.daro.so/ko/before-the-beginning
+repository: https://github.com/delightroom/daro-ios-sdk
+issue_tracker: https://github.com/delightroom/daro-ios-sdk/issues
+topics:
+  - ads
+  - advertising
+  - monetization
 
 environment:
-  sdk: ^3.5.0
+  sdk: ^3.7.0
   flutter: '>=3.24.0'
 
 dependencies:
