@@ -37,6 +37,5 @@ Pod::Spec.new do |spec|
   spec.dependency 'AppLovinMediationMolocoAdapter', '3.12.1.0'
   spec.dependency 'AppLovinMediationLineAdapter', '2.9.20250912.0'
   spec.dependency 'AppLovinMediationChartboostAdapter', '9.9.2.1'
-  spec.dependency 'AppLovinMediationOguryPresageAdapter', '5.1.0.1'
 
 end
