@@ -3,3 +3,8 @@
 
 *.xcframework.zip
 *.xcframework
+
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved

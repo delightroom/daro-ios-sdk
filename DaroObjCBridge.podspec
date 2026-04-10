@@ -25,22 +25,19 @@ Pod::Spec.new do |spec|
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   spec.vendored_frameworks = 'DaroObjCBridge.xcframework'
 
-  spec.dependency 'Google-Mobile-Ads-SDK', '12.8.0'
+  spec.dependency 'Google-Mobile-Ads-SDK', '12.14.0'
 
   # Google Admob partner networks
-  spec.dependency 'GoogleMobileAdsMediationFacebook', '6.20.1.0'     # Meta
-  spec.dependency 'GoogleMobileAdsMediationPangle', '7.6.0.6.0'      # Pangle
-  spec.dependency 'GoogleMobileAdsMediationInMobi', '10.8.6.0'       # Inmobi
-  spec.dependency 'GoogleMobileAdsMediationFyber', '8.4.1.0'         # DT Exchange
-  spec.dependency 'GoogleMobileAdsMediationChartboost', '9.9.2.0'    # Chatboost
-  spec.dependency 'GoogleMobileAdsMediationAppLovin', '13.4.0.0'     # AppLovin
-  spec.dependency 'GoogleMobileAdsMediationIronSource', '8.11.0.0.0' # IronSource
-  spec.dependency 'GoogleMobileAdsMediationVungle', '7.5.3.0'        # Vungle
-  spec.dependency 'GoogleMobileAdsMediationMintegral', '7.7.9.0'     # Mintegral
-  spec.dependency 'GoogleMobileAdsMediationMoloco', '3.12.1.0'       # Moloco
-  spec.dependency 'GoogleMobileAdsMediationLine', '2.9.20251119.0'   # Line (FiveAd)
-  spec.dependency 'GoogleMobileAdsMediationUnity', '4.16.1.0'        # Unity
-
-  # APS
-  spec.dependency 'AmazonPublisherServicesSDK', '5.3.0'
+  spec.dependency 'GoogleMobileAdsMediationFacebook', '6.21.0.1'     # Meta
+  spec.dependency 'GoogleMobileAdsMediationPangle', '7.8.5.7.0'      # Pangle
+  spec.dependency 'GoogleMobileAdsMediationInMobi', '11.1.0.1'       # Inmobi
+  spec.dependency 'GoogleMobileAdsMediationFyber', '8.4.3.0'         # DT Exchange
+  spec.dependency 'GoogleMobileAdsMediationChartboost', '9.11.0.1'   # Chatboost
+  spec.dependency 'GoogleMobileAdsMediationAppLovin', '13.5.0.0'     # AppLovin
+  spec.dependency 'GoogleMobileAdsMediationIronSource', '9.2.0.0.1'  # IronSource
+  spec.dependency 'GoogleMobileAdsMediationVungle', '7.6.3.1'        # Vungle
+  spec.dependency 'GoogleMobileAdsMediationMintegral', '8.0.5.1'     # Mintegral
+  spec.dependency 'GoogleMobileAdsMediationMoloco', '4.3.0.0'        # Moloco
+  spec.dependency 'GoogleMobileAdsMediationLine', '2.9.20251119.1'   # Line (FiveAd)
+  spec.dependency 'GoogleMobileAdsMediationUnity', '4.16.5.0'        # Unity
 end
