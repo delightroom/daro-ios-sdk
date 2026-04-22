@@ -35,5 +35,6 @@ Pod::Spec.new do |spec|
   spec.dependency 'GoogleMobileAdsMediationMoloco', '4.5.0.0'        # Moloco
   spec.dependency 'GoogleMobileAdsMediationLine', '3.0.0.1'          # Line (FiveAd)
   spec.dependency 'GoogleMobileAdsMediationUnity', '4.16.6.1'        # Unity
+  spec.dependency 'GoogleMobileAdsMediationPubMatic', '4.12.0.0'     # PubMatic
 
 end

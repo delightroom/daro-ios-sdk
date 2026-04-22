@@ -26,6 +26,7 @@ let package = Package(
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-moloco.git",          exact: "4.5.000"),
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-line.git",            exact: "3.0.1"),
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-unity.git",           exact: "4.16.601"),
+        .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-pubmatic.git",        exact: "4.12.0"),
     ],
     targets: [
         .binaryTarget(
@@ -50,6 +51,7 @@ let package = Package(
                 .product(name: "MolocoAdapterTarget",          package: "googleads-mobile-ios-mediation-moloco"),
                 .product(name: "LineAdapterTarget",            package: "googleads-mobile-ios-mediation-line"),
                 .product(name: "UnityAdapterTarget",           package: "googleads-mobile-ios-mediation-unity"),
+                .product(name: "PubMaticAdapterTarget",        package: "googleads-mobile-ios-mediation-pubmatic"),
             ],
             path: "SPM/DaroAds"
         ),
