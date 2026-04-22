@@ -34,10 +34,16 @@ let package = Package(
             url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.56-pre.1/Daro.xcframework.zip",
             checksum: "92637678ef57adacf23e5a7687f5e50a273854d0fcc9026d7799f3e9420ec185"
         ),
+        .binaryTarget(
+            name: "OMSDK_Prebidorg",
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.55-alpha/OMSDK_Prebidorg.xcframework.zip",
+            checksum: "0000000000000000000000000000000000000000000000000000000000000000"
+        ),
         .target(
             name: "DaroAds",
             dependencies: [
                 "Daro",
+                "OMSDK_Prebidorg",
                 .product(name: "GoogleMobileAds",              package: "swift-package-manager-google-mobile-ads"),
                 .product(name: "MetaAdapterTarget",            package: "googleads-mobile-ios-mediation-meta"),
                 .product(name: "PangleAdapterTarget",          package: "googleads-mobile-ios-mediation-pangle"),

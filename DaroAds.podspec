@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
   spec.homepage = 'https://delightroom.com'
   spec.license = { :type => 'Custom' }
   spec.author = { 'Won Jo' => 'lion@delightroom.com' }
-  spec.source = { :http => "https://github.com/delightroom/Daro-iOS-SDK/releases/download/#{spec.version}/Daro.xcframework.zip" }
+  spec.source = { :http => "https://github.com/delightroom/Daro-iOS-SDK/releases/download/#{spec.version}/DaroAds.bundle.zip" }
   spec.swift_version = '5.7'
   spec.ios.deployment_target = '13.0'
 
@@ -18,7 +18,7 @@ Pod::Spec.new do |spec|
 
   spec.static_framework = true
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
-  spec.vendored_frameworks = 'Daro.xcframework'
+  spec.vendored_frameworks = ['Daro.xcframework', 'OMSDK_Prebidorg.xcframework']
 
   spec.dependency 'Google-Mobile-Ads-SDK', '13.0.0'
 
