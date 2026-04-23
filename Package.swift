@@ -31,8 +31,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Daro",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.57-alpha-pre.1/Daro.xcframework.zip",
-            checksum: "513e3e60eb7c0743d165c861045b81c055849b4d1d4bbfaef64d0f11ef8b317b"
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.56-pre.1/Daro.xcframework.zip",
+            checksum: "f10d1c24c5cab6602bed5309e5073d7bce319484712eea3469a0886b0e5835d1"
         ),
         .target(
             name: "DaroAds",
