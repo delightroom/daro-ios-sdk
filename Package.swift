@@ -8,6 +8,7 @@ let package = Package(
     platforms: [.iOS(.v13)],
     products: [
         .library(name: "DaroAds", targets: ["DaroAds"]),
+        .library(name: "DaroObjCBridgeAds", targets: ["DaroObjCBridgeAds"]),
     ],
     dependencies: [
         .package(
@@ -34,6 +35,11 @@ let package = Package(
             url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.56-pre.1/Daro.xcframework.zip",
             checksum: "9c570c115b6de2680423d4a6c7ce50c6d1bc5d78e1f33ee8b6dcee9474d7a24c"
         ),
+        .binaryTarget(
+            name: "DaroObjCBridge",
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.55/DaroObjCBridge.xcframework.zip",
+            checksum: "5d39c2205b6a8a4dbb40cd3f5a72caff50baea2aae583cbb038af44a7a8d2ffa"
+        ),
         .target(
             name: "DaroAds",
             dependencies: [
@@ -54,6 +60,27 @@ let package = Package(
                 .product(name: "PubMaticAdapterTarget",        package: "googleads-mobile-ios-mediation-pubmatic"),
             ],
             path: "SPM/DaroAds"
+        ),
+        .target(
+            name: "DaroObjCBridgeAds",
+            dependencies: [
+                "DaroObjCBridge",
+                .product(name: "GoogleMobileAds",              package: "swift-package-manager-google-mobile-ads"),
+                .product(name: "MetaAdapterTarget",            package: "googleads-mobile-ios-mediation-meta"),
+                .product(name: "PangleAdapterTarget",          package: "googleads-mobile-ios-mediation-pangle"),
+                .product(name: "InMobiAdapterTarget",          package: "googleads-mobile-ios-mediation-inmobi"),
+                .product(name: "DTExchangeAdapterTarget",      package: "googleads-mobile-ios-mediation-dtexchange"),
+                .product(name: "ChartboostAdapterTarget",      package: "googleads-mobile-ios-mediation-chartboost"),
+                .product(name: "AppLovinAdapterTarget",        package: "googleads-mobile-ios-mediation-applovin"),
+                .product(name: "IronSourceAdapterTarget",      package: "googleads-mobile-ios-mediation-ironsource"),
+                .product(name: "LiftoffMonetizeAdapterTarget", package: "googleads-mobile-ios-mediation-liftoffmonetize"),
+                .product(name: "MintegralAdapterTarget",       package: "googleads-mobile-ios-mediation-mintegral"),
+                .product(name: "MolocoAdapterTarget",          package: "googleads-mobile-ios-mediation-moloco"),
+                .product(name: "LineAdapterTarget",            package: "googleads-mobile-ios-mediation-line"),
+                .product(name: "UnityAdapterTarget",           package: "googleads-mobile-ios-mediation-unity"),
+                .product(name: "PubMaticAdapterTarget",        package: "googleads-mobile-ios-mediation-pubmatic"),
+            ],
+            path: "SPM/DaroObjCBridgeAds"
         ),
     ]
 )
