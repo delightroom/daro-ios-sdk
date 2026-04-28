@@ -1,10 +1,12 @@
 import '../internal/ad_instance_manager.dart';
 import '../models/daro_ad_info.dart';
 import '../models/daro_ad_load_error.dart';
+import 'daro_ad_choices_position.dart';
 
 class DaroNativeAd {
   final String adUnitId;
   final String factoryId;
+  final DaroAdChoicesPosition preferredAdChoicesPosition;
   final void Function(DaroAdInfo adInfo)? onAdLoaded;
   final void Function(DaroAdLoadError error)? onAdFailedToLoad;
   final void Function(DaroAdInfo adInfo)? onAdClicked;
@@ -16,6 +18,7 @@ class DaroNativeAd {
   DaroNativeAd({
     required this.adUnitId,
     required this.factoryId,
+    this.preferredAdChoicesPosition = DaroAdChoicesPosition.bottomRight,
     this.onAdLoaded,
     this.onAdFailedToLoad,
     this.onAdClicked,
@@ -59,6 +62,7 @@ class DaroNativeAd {
       'adId': adId,
       'adUnitId': adUnitId,
       'factoryId': factoryId,
+      'preferredAdChoicesPosition': preferredAdChoicesPosition.name,
     });
   }
 

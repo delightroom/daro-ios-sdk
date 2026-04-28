@@ -1,3 +1,10 @@
+## 1.0.3
+
+- iOS Native SDK: DaroAds 1.1.57
+- Android Native SDK: daro-a 1.5.5
+- Release date: 2026-04-28
+
+
 ## plugin-v1.0.1
 
 - iOS Native SDK: DaroAds 1.1.55

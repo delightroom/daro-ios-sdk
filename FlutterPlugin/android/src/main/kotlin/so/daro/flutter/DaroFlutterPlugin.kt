@@ -15,6 +15,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import droom.daro.SDKConfig
 import droom.daro.a.Daro
+import droom.daro.core.model.DaroNativeAdChoicePlacement
 import so.daro.flutter.native.DaroNativeAdFactory
 import so.daro.flutter.native.DaroNativeAdViewFactory
 import so.daro.flutter.native.DaroNativeAdPlatformView
@@ -165,8 +166,11 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         val factory = nativeAdViewFactory?.getFactory(factoryId)
             ?: return result.error("FACTORY_NOT_FOUND", "Factory not registered: $factoryId", null)
 
+        val positionName = args["preferredAdChoicesPosition"] as? String
+        val placement = positionName.toDaroNativeAdChoicePlacement()
+
         val platformView = DaroNativeAdPlatformView(
-          context, adId, adUnitId, factory, channel
+          context, adId, adUnitId, factory, placement, channel
         )
         DaroAdInstanceManager.store(platformView, adId)
         result.success(null)
@@ -297,4 +301,12 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     appOpenAdManager?.setActivity(null)
     lightPopupAdManager?.setActivity(null)
   }
+}
+
+private fun String?.toDaroNativeAdChoicePlacement(): DaroNativeAdChoicePlacement = when (this) {
+    "topLeft"     -> DaroNativeAdChoicePlacement.TOP_LEFT
+    "topRight"    -> DaroNativeAdChoicePlacement.TOP_RIGHT
+    "bottomLeft"  -> DaroNativeAdChoicePlacement.BOTTOM_LEFT
+    "bottomRight" -> DaroNativeAdChoicePlacement.BOTTOM_RIGHT
+    else          -> DaroNativeAdChoicePlacement.BOTTOM_RIGHT
 }

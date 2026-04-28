@@ -16,6 +16,7 @@ export 'src/banner/daro_banner_ad_widget.dart';
 export 'src/banner/daro_banner_size.dart';
 export 'src/native_ad/daro_native_ad.dart';
 export 'src/native_ad/daro_native_ad_widget.dart';
+export 'src/native_ad/daro_ad_choices_position.dart';
 export 'src/native_ad/daro_line_native_ad.dart';
 export 'src/native_ad/daro_line_native_ad_widget.dart';
 

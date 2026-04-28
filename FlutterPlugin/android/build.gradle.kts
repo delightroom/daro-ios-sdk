@@ -34,7 +34,7 @@ android {
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
-    implementation("so.daro:daro-a:1.5.1")
+    implementation("so.daro:daro-a:1.5.5")
     implementation("so.daro:daro-compose-util:1.3.1") {
         exclude(group = "so.daro", module = "daro-core")
     }

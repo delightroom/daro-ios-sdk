@@ -12,6 +12,7 @@ class DaroNativeAdPlatformView: NSObject, FlutterPlatformView {
         adId: Int,
         adUnitId: String,
         factory: DaroNativeAdFactory,
+        preferredAdChoicesPosition: DaroAdChoicesPosition,
         channel: FlutterMethodChannel
     ) {
         self.containerView = UIView(frame: frame)
@@ -20,7 +21,10 @@ class DaroNativeAdPlatformView: NSObject, FlutterPlatformView {
         self.channel = channel
 
         let adUnit = DaroAdUnit(unitId: adUnitId)
-        self.nativeAdView = factory.createNativeAdView(unit: adUnit)
+        self.nativeAdView = factory.createNativeAdView(
+            unit: adUnit,
+            preferredAdChoicesPosition: preferredAdChoicesPosition
+        )
 
         super.init()
 

@@ -153,6 +153,9 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
         return
       }
 
+      let positionName = args["preferredAdChoicesPosition"] as? String
+      let position = DaroAdChoicesPosition.fromName(positionName) ?? .bottomRight
+
       guard let factory = Self.nativeAdViewFactory?.getFactory(withId: factoryId) else {
         result(FlutterError(code: "FACTORY_NOT_FOUND", message: "Factory not registered: \(factoryId)", details: nil))
         return
@@ -163,6 +166,7 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
         adId: adId,
         adUnitId: adUnitId,
         factory: factory,
+        preferredAdChoicesPosition: position,
         channel: channel
       )
       DaroAdInstanceManager.shared.store(platformView, forId: adId)
@@ -261,4 +265,16 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
     }
     result(nil)
   }
+}
+
+private extension DaroAdChoicesPosition {
+    static func fromName(_ name: String?) -> DaroAdChoicesPosition? {
+        switch name {
+        case "topLeft":     return .topLeft
+        case "topRight":    return .topRight
+        case "bottomRight": return .bottomRight
+        case "bottomLeft":  return .bottomLeft
+        default:            return nil
+        }
+    }
 }

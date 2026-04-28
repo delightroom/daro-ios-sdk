@@ -8,6 +8,7 @@ import io.flutter.plugin.platform.PlatformView
 import droom.daro.core.adunit.DaroNativeAdUnit
 import droom.daro.view.DaroNativeAdView
 import droom.daro.core.model.DaroNativeAdBinder
+import droom.daro.core.model.DaroNativeAdChoicePlacement
 import droom.daro.view.DaroAdViewListener
 import droom.daro.core.model.DaroAdInfo
 import droom.daro.core.model.DaroAdLoadError
@@ -18,6 +19,7 @@ class DaroNativeAdPlatformView(
     private val adId: Int,
     private val adUnitId: String,
     private val factory: DaroNativeAdFactory,
+    private val adChoicePlacement: DaroNativeAdChoicePlacement,
     private val channel: MethodChannel
 ) : PlatformView {
 
@@ -37,7 +39,7 @@ class DaroNativeAdPlatformView(
 
     private fun setupNativeAd(context: Context) {
         val customView = factory.createNativeAdView()
-        val adBinder = factory.createAdBinder(customView)
+        val adBinder = factory.createAdBinder(customView, adChoicePlacement)
 
         val adUnit = DaroNativeAdUnit(
             key = adUnitId,
