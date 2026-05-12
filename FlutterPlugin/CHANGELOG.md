@@ -1,3 +1,10 @@
+## 1.0.4
+
+- iOS Native SDK: DaroAds 1.1.58
+- Android Native SDK: daro-a 1.5.5
+- Release date: 2026-05-12
+
+
 ## 1.0.3
 
 - iOS Native SDK: DaroAds 1.1.57
