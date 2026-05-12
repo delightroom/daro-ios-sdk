@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-meta.git",            exact: "6.21.2"),
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-pangle.git",          exact: "7.9.600"),
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-inmobi.git",          exact: "11.1.101"),
-        .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-dtexchange.git",      exact: "8.4.500"),
+        .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-dtexchange.git",      exact: "8.4.401"),
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-chartboost.git",      exact: "9.11.3"),
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-applovin.git",        exact: "13.6.0"),
         .package(url: "https://github.com/googleads/googleads-mobile-ios-mediation-ironsource.git",      exact: "9.3.1"),
