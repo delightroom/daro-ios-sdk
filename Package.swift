@@ -32,18 +32,18 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Daro",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.58/Daro.xcframework.zip",
-            checksum: "f3c7233d89bc8668a6c212693ae2bcd4a16cdcb9963400033480b976c98c6e68"
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.59-pre.1/Daro.xcframework.zip",
+            checksum: "996b6118a7087edcfb634e7fdb40683f58c3169fc2d3a268b6f223c62dc21e00"
         ),
         .binaryTarget(
             name: "DaroObjCBridge",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.58/DaroObjCBridge.xcframework.zip",
-            checksum: "a00e22b16add760275ff7586ed1ef65dfbbf745c276cbb4397712e1d1cb82677"
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.59-pre.1/DaroObjCBridge.xcframework.zip",
+            checksum: "8f69ed6ec942fc2ae5af3bb52d3517911619a22565c35526596e229cc2774f61"
         ),
         .binaryTarget(
             name: "OMSDK-Static_Delightroom",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.57/OMSDK-Static_Delightroom.xcframework.zip",
-            checksum: "0000000000000000000000000000000000000000000000000000000000000000"
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.59-pre.1/OMSDK-Static_Delightroom.xcframework.zip",
+            checksum: "5b74928d4d6b5fbfac1b3e09dc964948e73114601b820cb9fc0cb4e8a0f11ee8"
         ),
         .target(
             name: "DaroAds",
