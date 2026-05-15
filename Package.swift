@@ -40,16 +40,10 @@ let package = Package(
             url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.59-pre.1/DaroObjCBridge.xcframework.zip",
             checksum: "3056b5500526b39d7073f6bcc59a7619e4336337cdbba1fc2d0fbe70a193451a"
         ),
-        .binaryTarget(
-            name: "OMSDK-Static_Delightroom",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.59-pre.1/OMSDK-Static_Delightroom.xcframework.zip",
-            checksum: "79013a5d056bbd60a62ac18febef723163b84e453904589df63d3e751e0127d1"
-        ),
         .target(
             name: "DaroAds",
             dependencies: [
                 "Daro",
-                "OMSDK-Static_Delightroom",
                 .product(name: "GoogleMobileAds",              package: "swift-package-manager-google-mobile-ads"),
                 .product(name: "MetaAdapterTarget",            package: "googleads-mobile-ios-mediation-meta"),
                 .product(name: "PangleAdapterTarget",          package: "googleads-mobile-ios-mediation-pangle"),
