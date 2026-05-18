@@ -19,6 +19,10 @@ class DaroNativeAdViewFactory(
         factoryRegistry[factoryId] = factory
     }
 
+    fun unregisterFactory(factoryId: String): DaroNativeAdFactory? {
+        return factoryRegistry.remove(factoryId)
+    }
+
     fun getFactory(factoryId: String): DaroNativeAdFactory? {
         return factoryRegistry[factoryId]
     }

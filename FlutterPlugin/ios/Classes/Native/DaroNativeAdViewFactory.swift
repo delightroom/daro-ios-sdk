@@ -14,6 +14,11 @@ class DaroNativeAdViewFactory: NSObject, FlutterPlatformViewFactory {
         factoryRegistry[id] = factory
     }
 
+    @discardableResult
+    func unregisterFactory(withId id: String) -> DaroNativeAdFactory? {
+        return factoryRegistry.removeValue(forKey: id)
+    }
+
     func getFactory(withId id: String) -> DaroNativeAdFactory? {
         return factoryRegistry[id]
     }

@@ -7,12 +7,13 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
   private var rewardedAdManager: DaroRewardedAdManager?
   private var appOpenAdManager: DaroAppOpenAdManager?
   private var lightPopupAdManager: DaroLightPopupAdManager?
-  private static var nativeAdViewFactory: DaroNativeAdViewFactory?
+  fileprivate var nativeAdViewFactory: DaroNativeAdViewFactory?
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "daro_flutter", binaryMessenger: registrar.messenger())
     let instance = DaroFlutterPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
+    registrar.publish(instance)
 
     let interstitialMethodChannel = FlutterMethodChannel(name: "daro_flutter/interstitial", binaryMessenger: registrar.messenger())
     let interstitialEventChannel = FlutterEventChannel(name: "daro_flutter/interstitial_events", binaryMessenger: registrar.messenger())
@@ -58,7 +59,7 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
     }
     lightPopupEventChannel.setStreamHandler(lightPopupManager)
 
-    // ad_manager 채널: view-based 광고(배너/네이티브/라인네이티브) 로드/파괴
+    // ad_manager channel: load/destroy for view-based ads (banner / native / line native)
     let adManagerChannel = FlutterMethodChannel(
       name: "daro_flutter/ad_manager",
       binaryMessenger: registrar.messenger()
@@ -67,22 +68,19 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
       instance.handleAdManager(call, result: result, messenger: registrar.messenger(), channel: adManagerChannel)
     }
 
-    // 네이티브 광고 팩토리 등록
     let nativeFactory = DaroNativeAdViewFactory(messenger: registrar.messenger())
     registrar.register(
       nativeFactory,
       withId: "daro_native_ad_view"
     )
-    Self.nativeAdViewFactory = nativeFactory
+    instance.nativeAdViewFactory = nativeFactory
 
-    // 배너 광고 팩토리 등록
     let bannerFactory = DaroBannerAdViewFactory(messenger: registrar.messenger())
     registrar.register(
       bannerFactory,
       withId: "daro_banner_ad_view"
     )
 
-    // 라인 네이티브 광고 팩토리 등록
     let lineNativeFactory = DaroLineNativeAdViewFactory(messenger: registrar.messenger())
     registrar.register(
       lineNativeFactory,
@@ -90,13 +88,32 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
     )
   }
 
-  /// 네이티브 광고 팩토리를 등록할 수 있는 공개 메서드
+  @discardableResult
   public static func registerNativeAdFactory(
-    _ factory: DaroNativeAdFactory,
-    factoryId: String
-  ) {
-    nativeAdViewFactory?.registerFactory(factory, withId: factoryId)
+    _ registry: FlutterPluginRegistry,
+    factoryId: String,
+    nativeAdFactory: DaroNativeAdFactory
+  ) -> Bool {
+    guard let plugin = registry.valuePublished(byPlugin: pluginRegistrationName) as? DaroFlutterPlugin else {
+      assertionFailure("Could not find a DaroFlutterPlugin instance. The plugin may have not been registered.")
+      return false
+    }
+    plugin.nativeAdViewFactory?.registerFactory(nativeAdFactory, withId: factoryId)
+    return true
   }
+
+  @discardableResult
+  public static func unregisterNativeAdFactory(
+    _ registry: FlutterPluginRegistry,
+    factoryId: String
+  ) -> DaroNativeAdFactory? {
+    guard let plugin = registry.valuePublished(byPlugin: pluginRegistrationName) as? DaroFlutterPlugin else {
+      return nil
+    }
+    return plugin.nativeAdViewFactory?.unregisterFactory(withId: factoryId)
+  }
+
+  private static let pluginRegistrationName = "DaroFlutterPlugin"
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
@@ -156,7 +173,7 @@ public class DaroFlutterPlugin: NSObject, FlutterPlugin {
       let positionName = args["preferredAdChoicesPosition"] as? String
       let position = DaroAdChoicesPosition.fromName(positionName) ?? .bottomRight
 
-      guard let factory = Self.nativeAdViewFactory?.getFactory(withId: factoryId) else {
+      guard let factory = nativeAdViewFactory?.getFactory(withId: factoryId) else {
         result(FlutterError(code: "FACTORY_NOT_FOUND", message: "Factory not registered: \(factoryId)", details: nil))
         return
       }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import androidx.annotation.NonNull
+import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -32,13 +33,32 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   private var rewardedAdManager: DaroRewardedAdManager? = null
   private var appOpenAdManager: DaroFlutterAppOpenAdManager? = null
   private var lightPopupAdManager: DaroFlutterLightPopupAdManager? = null
+  private var nativeAdViewFactory: DaroNativeAdViewFactory? = null
 
   companion object {
-    private var nativeAdViewFactory: DaroNativeAdViewFactory? = null
+    @JvmStatic
+    fun registerNativeAdFactory(
+      engine: FlutterEngine,
+      factoryId: String,
+      factory: DaroNativeAdFactory,
+    ): Boolean {
+      val plugin = engine.plugins.get(DaroFlutterPlugin::class.java) as? DaroFlutterPlugin
+        ?: throw IllegalStateException(
+          "Could not find a DaroFlutterPlugin instance. The plugin may have not been registered."
+        )
+      val viewFactory = plugin.nativeAdViewFactory
+        ?: throw IllegalStateException(
+          "DaroFlutterPlugin is not attached to a FlutterEngine yet."
+        )
+      viewFactory.registerFactory(factory, factoryId)
+      return true
+    }
 
     @JvmStatic
-    fun registerNativeAdFactory(factory: DaroNativeAdFactory, factoryId: String) {
-      nativeAdViewFactory?.registerFactory(factory, factoryId)
+    fun unregisterNativeAdFactory(engine: FlutterEngine, factoryId: String): DaroNativeAdFactory? {
+      val plugin = engine.plugins.get(DaroFlutterPlugin::class.java) as? DaroFlutterPlugin
+        ?: return null
+      return plugin.nativeAdViewFactory?.unregisterFactory(factoryId)
     }
   }
 
@@ -85,7 +105,7 @@ class DaroFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     lightPopupMethodChannel.setMethodCallHandler(lightPopupManager)
     lightPopupEventChannel.setStreamHandler(lightPopupManager)
 
-    // ad_manager 채널: view-based 광고 로드/파괴
+    // ad_manager channel: load/destroy for view-based ads
     val adMgrChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "daro_flutter/ad_manager")
     adManagerChannel = adMgrChannel
     adMgrChannel.setMethodCallHandler { call, result ->
