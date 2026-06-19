@@ -37,23 +37,4 @@ Pod::Spec.new do |spec|
   spec.dependency 'GoogleMobileAdsMediationUnity', '4.16.6.1'        # Unity
   spec.dependency 'GoogleMobileAdsMediationPubMatic', '4.12.0.0'     # PubMatic
 
-  # AppLovin MAX partner networks
-  spec.dependency 'AppLovinSDK', '13.6.0'
-  spec.dependency 'AppLovinMediationGoogleAdapter', '13.0.0.0'
-  spec.dependency 'AppLovinMediationFacebookAdapter', '6.21.0.0'
-  spec.dependency 'AppLovinMediationByteDanceAdapter', '7.9.0.6.0'
-  spec.dependency 'AppLovinMediationInMobiAdapter', '11.1.1.0'
-  spec.dependency 'AppLovinMediationVungleAdapter', '7.7.0.0'
-  spec.dependency 'AppLovinMediationFyberAdapter', '8.4.4.0'
-  spec.dependency 'AppLovinMediationMintegralAdapter', '8.0.7.0.0'
-  spec.dependency 'AmazonPublisherServicesSDK', '5.3.0'
-  spec.dependency 'AppLovinMediationAmazonAdMarketplaceAdapter', '5.3.0.0'
-  spec.dependency 'AppLovinMediationVerveAdapter', '3.7.0.0'
-  spec.dependency 'AppLovinMediationIronSourceAdapter', '9.3.0.0.0'
-  spec.dependency 'AppLovinMediationUnityAdsAdapter', '4.16.6.0'
-  spec.dependency 'AppLovinMediationSmaatoAdapter', '22.9.3.1'
-  spec.dependency 'AppLovinMediationMolocoAdapter', '4.5.0.0'
-  spec.dependency 'AppLovinMediationLineAdapter', '3.0.0.0'
-  spec.dependency 'AppLovinMediationChartboostAdapter', '9.11.0.0'
-
 end
