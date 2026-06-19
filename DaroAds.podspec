@@ -16,6 +16,11 @@ Pod::Spec.new do |spec|
     'DaroAdsResources' => ['Daro.xcframework/ios-arm64/Daro.framework/PrivacyInfo.xcprivacy']
   }
 
+  # [RTB] PrebidMobile SPM 리소스 번들(mraid.js / omsdk.js) 동봉.
+  # 런타임에 Bundle.module 이 앱 번들에서 PrebidMobile_PrebidMobile.bundle 을 찾으므로 as-is 로 복사.
+  # RTB(prebid) 통합 라인 전용 — production main 에는 두지 않음.
+  spec.resources = ['Daro.xcframework/ios-arm64/Daro.framework/PrebidMobile_PrebidMobile.bundle']
+
   spec.static_framework = true
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   spec.vendored_frameworks = 'Daro.xcframework'
