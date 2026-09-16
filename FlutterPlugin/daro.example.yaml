@@ -1,0 +1,7 @@
+ios:
+  app_key: "YOUR_IOS_DARO_APP_KEY"
+  admob_app_id: "ca-app-pub-0000000000000000~0000000000"
+  key_file: "keys/ios-daro-key.txt"
+android:
+  app_key: "YOUR_ANDROID_DARO_APP_KEY"
+  key_file: "keys/android-daro-key.txt"

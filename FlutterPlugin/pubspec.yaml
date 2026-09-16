@@ -1,6 +1,6 @@
 name: daro_flutter
 description: Daro Flutter SDK
-version: 1.0.6
+version: 1.0.7
 homepage: https://guide.daro.so/ko/before-the-beginning
 repository: https://github.com/delightroom/daro-ios-sdk
 issue_tracker: https://github.com/delightroom/daro-ios-sdk/issues
@@ -17,6 +17,9 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
+  yaml: ^3.1.3
+  xml: ^6.5.0
+  pub_semver: ^2.1.4
 
 dev_dependencies:
   flutter_test:

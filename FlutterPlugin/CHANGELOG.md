@@ -1,3 +1,8 @@
+## 1.0.7
+
+- [DARO-1924](https://linear.app/delightroom/issue/DARO-1924): Add configure and doctor commands for Flutter 1.x native setup from daro.yaml and existing key files.
+- Preserve the native dependency versions of Flutter 1.0.6: DaroAds 1.1.61, daro-a 1.5.5, daro-compose-util 1.3.1.
+
 ## 1.0.6
 
 - iOS Native SDK: DaroAds 1.1.61
