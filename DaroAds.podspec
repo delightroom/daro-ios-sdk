@@ -15,12 +15,12 @@ Pod::Spec.new do |spec|
   spec.resource_bundles = {
     'DaroAdsResources' => ['Daro.xcframework/ios-arm64/Daro.framework/PrivacyInfo.xcprivacy']
   }
-  spec.resources = ['Daro.xcframework/ios-arm64/Daro.framework/PrebidMobile_PrebidMobile.bundle']
 
   spec.static_framework = true
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   spec.vendored_frameworks = 'Daro.xcframework'
 
+  spec.dependency 'DaroBidAdMobAdapter', '2.0.4'
   spec.dependency 'Google-Mobile-Ads-SDK', '13.0.0'
 
   # Google Admob partner networks

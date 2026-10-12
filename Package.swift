@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "DaroObjCBridgeAds", targets: ["DaroObjCBridgeAds"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/delightroom/daro-rtb-ios-admob-adapter.git", exact: "2.0.4"),
         .package(
             url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
             exact: "13.0.0"
@@ -32,19 +33,19 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Daro",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.68-alpha/Daro.xcframework.zip",
-            checksum: "f80a2dd10add0aaebc6026c0fcdd60e970cfcafa0b7ee2f1d854dc0050cba727"
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.2.13-pre.1/Daro.xcframework.zip",
+            checksum: "1fe24891bf65be92b33ef13bf777f3d52490895903f4e1b90ddde28f164f3ae3"
         ),
         .binaryTarget(
             name: "DaroObjCBridge",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.1.68-alpha/DaroObjCBridge.xcframework.zip",
-            checksum: "10d6034a12a821639720abb68e54dc07327670f60c11775ad9b67dbffee18593"
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.2.13-pre.1/DaroObjCBridge.xcframework.zip",
+            checksum: "15622ca958ab8bacff5767008876ea472ba31a73b78a7a8b519c77c508f59fce"
         ),
         .target(
             name: "DaroAds",
             dependencies: [
                 "Daro",
-                "PrebidMobile",
+                .product(name: "DaroBidAdMobAdapter", package: "daro-rtb-ios-admob-adapter"),
                 .product(name: "GoogleMobileAds",              package: "swift-package-manager-google-mobile-ads"),
                 .product(name: "MetaAdapterTarget",            package: "googleads-mobile-ios-mediation-meta"),
                 .product(name: "PangleAdapterTarget",          package: "googleads-mobile-ios-mediation-pangle"),
@@ -66,7 +67,7 @@ let package = Package(
             name: "DaroObjCBridgeAds",
             dependencies: [
                 "DaroObjCBridge",
-                "PrebidMobile",
+                .product(name: "DaroBidAdMobAdapter", package: "daro-rtb-ios-admob-adapter"),
                 .product(name: "GoogleMobileAds",              package: "swift-package-manager-google-mobile-ads"),
                 .product(name: "MetaAdapterTarget",            package: "googleads-mobile-ios-mediation-meta"),
                 .product(name: "PangleAdapterTarget",          package: "googleads-mobile-ios-mediation-pangle"),
@@ -83,15 +84,6 @@ let package = Package(
                 .product(name: "PubMaticAdapterTarget",        package: "googleads-mobile-ios-mediation-pubmatic"),
             ],
             path: "SPM/DaroObjCBridgeAds"
-        ),
-        .target(
-            name: "PrebidMobile",
-            path: "SPM/PrebidMobileResources/Sources/PrebidMobile",
-            resources: [
-                .copy("mraid.js"),
-                .copy("omsdk.js"),
-            ],
-            publicHeadersPath: "include"
         ),
     ]
 )
