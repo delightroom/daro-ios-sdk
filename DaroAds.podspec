@@ -37,5 +37,8 @@ Pod::Spec.new do |spec|
   spec.dependency 'GoogleMobileAdsMediationLine', '3.0.0.1'          # Line (FiveAd)
   spec.dependency 'GoogleMobileAdsMediationUnity', '4.16.6.1'        # Unity
   spec.dependency 'GoogleMobileAdsMediationPubMatic', '4.12.0.0'     # PubMatic
+  spec.dependency 'GoogleMobileAdsMediationVerve', '3.7.1.3'        # Verve
+  spec.dependency 'GoogleMobileAdsMediationBidMachine', '3.5.1.2'   # BidMachine
+  spec.dependency 'GoogleMobileAdsMediationBigo', '5.0.6.2'         # Bigo
 
 end
