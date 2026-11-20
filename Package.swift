@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "DaroObjCBridgeAds", targets: ["DaroObjCBridgeAds"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/delightroom/daro-rtb-ios-admob-adapter.git", exact: "2.0.4"),
+        .package(url: "https://github.com/delightroom/daro-rtb-ios-admob-adapter.git", exact: "2.0.6"),
         .package(
             url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
             exact: "13.0.0"
@@ -33,13 +33,13 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Daro",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.2.13-pre.1/Daro.xcframework.zip",
-            checksum: "1fe24891bf65be92b33ef13bf777f3d52490895903f4e1b90ddde28f164f3ae3"
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.2.15-alpha-pre.1/Daro.xcframework.zip",
+            checksum: "15ad8f74dce14981ec02841758d0c7e666eef075858781e65051d06237624330"
         ),
         .binaryTarget(
             name: "DaroObjCBridge",
-            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.2.13-pre.1/DaroObjCBridge.xcframework.zip",
-            checksum: "15622ca958ab8bacff5767008876ea472ba31a73b78a7a8b519c77c508f59fce"
+            url: "https://github.com/delightroom/daro-ios-sdk/releases/download/1.2.15-alpha-pre.1/DaroObjCBridge.xcframework.zip",
+            checksum: "01890dd09b9a5c1b58825fdf0d308ebd06f080b14c5edf5b329f3243fb52f3cd"
         ),
         .target(
             name: "DaroAds",
