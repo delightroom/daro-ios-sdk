@@ -30,7 +30,6 @@ Pod::Spec.new do |spec|
   spec.dependency 'GoogleMobileAdsMediationFyber', '8.4.4.1'         # DT Exchange
   spec.dependency 'GoogleMobileAdsMediationChartboost', '9.11.0.3'   # Chartboost
   spec.dependency 'GoogleMobileAdsMediationAppLovin', '13.6.0.0'     # AppLovin
-  spec.dependency 'GoogleMobileAdsMediationIronSource', '9.3.0.0.1'  # IronSource
   spec.dependency 'GoogleMobileAdsMediationVungle', '7.7.0.0'        # Liftoff (Vungle)
   spec.dependency 'GoogleMobileAdsMediationMintegral', '8.0.7.0'     # Mintegral
   spec.dependency 'GoogleMobileAdsMediationMoloco', '4.5.0.0'        # Moloco
